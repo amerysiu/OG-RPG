@@ -1,0 +1,34 @@
+[gd_resource type="Theme" load_steps=2 format=3]
+
+; Global UI theme for OG English Learning.
+;
+; Accessibility intent: this game is for struggling readers, so the default
+; typography is deliberately wide. Every Label and RichTextLabel in the project
+; (hand-built in .tscn files AND generated in code at runtime) picks this up
+; automatically, because `default_font` is the fallback for all font lookups and
+; the Label / RichTextLabel entries below pin the family explicitly.
+;
+; The spacing values live on a FontVariation so they apply to the font itself:
+;   spacing_glyph  - extra pixels between every glyph (letter spacing)
+;   spacing_space  - extra pixels of width for the space glyph
+;   spacing_bottom - extra pixels below the baseline of each line (line descent)
+;
+; NOTE: FontVariation.base_font is intentionally unset while the OpenDyslexic
+; font file is not yet in the project. Per the Godot docs, an unset base_font
+; makes the variation fall back to the default theme font, so the theme renders
+; correctly today and switching to OpenDyslexic is a one-line change: set
+; base_font on the FontVariation below to the imported FontFile resource.
+
+[sub_resource type="FontVariation" id="FontVariation_body"]
+spacing_glyph = 3
+spacing_space = 3
+spacing_bottom = 4
+
+[resource]
+default_font = SubResource("FontVariation_body")
+Label/fonts/font = SubResource("FontVariation_body")
+RichTextLabel/fonts/normal_font = SubResource("FontVariation_body")
+RichTextLabel/fonts/bold_font = SubResource("FontVariation_body")
+RichTextLabel/fonts/italics_font = SubResource("FontVariation_body")
+RichTextLabel/fonts/bold_italics_font = SubResource("FontVariation_body")
+RichTextLabel/fonts/mono_font = SubResource("FontVariation_body")

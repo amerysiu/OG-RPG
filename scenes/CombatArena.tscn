@@ -1,0 +1,332 @@
+[gd_scene format=3 uid="uid://ba7kwtbum82e0"]
+
+[ext_resource type="Script" uid="uid://c6dsqevnbpg60" path="res://scripts/combat_arena.gd" id="1_arena"]
+
+[node name="CombatArena" type="Node2D" unique_id=902134344]
+script = ExtResource("1_arena")
+
+[node name="Background" type="ColorRect" parent="." unique_id=2022748532]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.075, 0.07, 0.11, 1)
+
+[node name="Battlefield" type="Control" parent="." unique_id=283441248]
+layout_mode = 3
+anchor_right = 0.6
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Sky" type="ColorRect" parent="Battlefield" unique_id=445209558]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.16, 0.14, 0.24, 1)
+
+[node name="Ground" type="ColorRect" parent="Battlefield" unique_id=74634046]
+layout_mode = 0
+anchor_top = 0.68
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.24, 0.2, 0.16, 1)
+
+[node name="MonsterNode" type="Node2D" parent="Battlefield" unique_id=1570614574]
+position = Vector2(346, 358)
+
+[node name="Shadow" type="Polygon2D" parent="Battlefield/MonsterNode" unique_id=143985184]
+position = Vector2(0, 62)
+color = Color(0.04, 0.03, 0.07, 0.35)
+polygon = PackedVector2Array(-72, 0, -40, -12, 0, -16, 40, -12, 72, 0, 40, 12, 0, 16, -40, 12)
+
+[node name="Body" type="Polygon2D" parent="Battlefield/MonsterNode" unique_id=1955453647]
+color = Color(0.45, 0.72, 0.5, 1)
+polygon = PackedVector2Array(-78, -6, -60, -52, -20, -74, 24, -70, 66, -40, 78, 4, 62, 52, 20, 74, -26, 70, -66, 44)
+
+[node name="EyeL" type="Polygon2D" parent="Battlefield/MonsterNode" unique_id=542549705]
+position = Vector2(-26, -24)
+color = Color(0.11, 0.09, 0.16, 1)
+polygon = PackedVector2Array(-10, -11, 10, -11, 10, 11, -10, 11)
+
+[node name="EyeR" type="Polygon2D" parent="Battlefield/MonsterNode" unique_id=364755757]
+position = Vector2(26, -24)
+color = Color(0.11, 0.09, 0.16, 1)
+polygon = PackedVector2Array(-10, -11, 10, -11, 10, 11, -10, 11)
+
+[node name="HealthBack" type="ColorRect" parent="Battlefield/MonsterNode" unique_id=903021352]
+offset_left = -72.0
+offset_top = -104.0
+offset_right = 72.0
+offset_bottom = -88.0
+mouse_filter = 2
+color = Color(0.14, 0.11, 0.18, 1)
+
+[node name="HealthFill" type="ColorRect" parent="Battlefield/MonsterNode" unique_id=451892847]
+offset_left = -70.0
+offset_top = -102.0
+offset_right = 70.0
+offset_bottom = -90.0
+mouse_filter = 2
+color = Color(0.45, 0.85, 0.45, 1)
+
+[node name="Swipe" type="Node2D" parent="Battlefield/MonsterNode" unique_id=1882345293]
+visible = false
+
+[node name="Blade" type="Polygon2D" parent="Battlefield/MonsterNode/Swipe" unique_id=698087939]
+color = Color(1, 0.99, 0.92, 0.9)
+polygon = PackedVector2Array(-110, -6, 110, -18, 118, 0, 110, 20, -110, 8)
+
+[node name="EmoteMarker" type="Node2D" parent="Battlefield/MonsterNode" unique_id=1311327140]
+position = Vector2(0, -158)
+
+[node name="Bubble" type="Polygon2D" parent="Battlefield/MonsterNode/EmoteMarker" unique_id=1822118499]
+color = Color(1, 1, 1, 0.96)
+polygon = PackedVector2Array(-32, -36, 32, -36, 32, 14, 8, 14, 0, 30, -8, 14, -32, 14)
+
+[node name="Glyph" type="Label" parent="Battlefield/MonsterNode/EmoteMarker" unique_id=367349555]
+offset_left = -30.0
+offset_top = -36.0
+offset_right = 30.0
+offset_bottom = 12.0
+theme_override_colors/font_color = Color(0.18, 0.14, 0.3, 1)
+theme_override_font_sizes/font_size = 34
+text = "!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sweat" type="Polygon2D" parent="Battlefield/MonsterNode/EmoteMarker" unique_id=1504353350]
+visible = false
+position = Vector2(38, 22)
+color = Color(0.45, 0.75, 0.98, 0.95)
+polygon = PackedVector2Array(0, -26, 12, -4, 0, 12, -12, -4)
+
+[node name="Cue" type="Label" parent="Battlefield" unique_id=1005712818]
+layout_mode = 0
+anchor_right = 1.0
+offset_top = 26.0
+offset_bottom = 132.0
+theme_override_colors/font_color = Color(1, 0.96, 0.72, 1)
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="BarPanel" type="ColorRect" parent="." unique_id=32310123]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -170.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+color = Color(0.11, 0.1, 0.16, 1)
+
+[node name="ActionBar" type="HBoxContainer" parent="." unique_id=328105766]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -150.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="Card1" type="TextureButton" parent="ActionBar" unique_id=632376984]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+focus_mode = 0
+
+[node name="Border" type="ColorRect" parent="ActionBar/Card1" unique_id=1557138699]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.78, 0.22, 0)
+
+[node name="Face" type="ColorRect" parent="ActionBar/Card1" unique_id=2105020420]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.95, 0.96, 1, 1)
+
+[node name="Glyph" type="Label" parent="ActionBar/Card1" unique_id=731886983]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.2, 0.16, 0.35, 1)
+theme_override_font_sizes/font_size = 40
+text = "sh"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Card2" type="TextureButton" parent="ActionBar" unique_id=641984110]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+focus_mode = 0
+
+[node name="Border" type="ColorRect" parent="ActionBar/Card2" unique_id=99965556]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.78, 0.22, 0)
+
+[node name="Face" type="ColorRect" parent="ActionBar/Card2" unique_id=1916291989]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.95, 0.96, 1, 1)
+
+[node name="Glyph" type="Label" parent="ActionBar/Card2" unique_id=578582783]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.2, 0.16, 0.35, 1)
+theme_override_font_sizes/font_size = 40
+text = "ch"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Card3" type="TextureButton" parent="ActionBar" unique_id=975107769]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+focus_mode = 0
+
+[node name="Border" type="ColorRect" parent="ActionBar/Card3" unique_id=512512730]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.78, 0.22, 0)
+
+[node name="Face" type="ColorRect" parent="ActionBar/Card3" unique_id=1147226921]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.95, 0.96, 1, 1)
+
+[node name="Glyph" type="Label" parent="ActionBar/Card3" unique_id=134231303]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.2, 0.16, 0.35, 1)
+theme_override_font_sizes/font_size = 40
+text = "th"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Card4" type="TextureButton" parent="ActionBar" unique_id=134193901]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+focus_mode = 0
+
+[node name="Border" type="ColorRect" parent="ActionBar/Card4" unique_id=2079808548]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.78, 0.22, 0)
+
+[node name="Face" type="ColorRect" parent="ActionBar/Card4" unique_id=59306505]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.95, 0.96, 1, 1)
+
+[node name="Glyph" type="Label" parent="ActionBar/Card4" unique_id=19049621]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.2, 0.16, 0.35, 1)
+theme_override_font_sizes/font_size = 40
+text = "wh"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Prompt" type="Label" parent="." unique_id=234389232]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 16.0
+offset_bottom = 54.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.88, 0.9, 0.98, 1)
+theme_override_font_sizes/font_size = 22
+text = "Listen, then tap the spelling of that sound."
+horizontal_alignment = 1
+
+[node name="ReplayButton" type="Button" parent="." unique_id=842265250]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -216.0
+offset_top = 14.0
+offset_right = -24.0
+offset_bottom = 56.0
+grow_horizontal = 0
+focus_mode = 0
+theme_override_font_sizes/font_size = 18
+text = "Hear it again"
+
+[node name="SfxPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1657507660]
+max_distance = 4000.0
+attenuation = 0.0
+
+[node name="PhonemePlayer" type="AudioStreamPlayer2D" parent="." unique_id=1416335953]
+max_distance = 4000.0
+attenuation = 0.0

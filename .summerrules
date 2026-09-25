@@ -1,0 +1,8 @@
+# Project rules - OG English Learning
+
+- Genre: top-down 2D ARPG for Orton-Gillingham reading and spelling practice. Explore the wild, defeat monsters, gather gold and resources, then build and upgrade the village.
+- Combat is assessment: a monster is defeated by completing word mini-games, never by twitch/dodge combat.
+- Word content follows the OG scope and sequence and is gated by it: CVC closed syllables -> consonant digraphs -> blends -> VCe (magic e) -> vowel teams -> r-controlled -> consonant-le.
+- Mini-games must be OG-grounded and multisensory in style (letter tiles, Elkonin sound boxes, word chains, syllable sorting, spelling-rule choice). Generic letter-guessing (hangman/Wordle clones) is not an acceptable primary mechanic.
+- Placeholder colored-shape art is scaffolding only. Real 2D art is its own milestone and is never treated as finished.
+- The village is the safe hub. The wild is where monsters and resources are.

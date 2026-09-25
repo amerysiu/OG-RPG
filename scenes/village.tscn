@@ -1,0 +1,973 @@
+[gd_scene format=3 uid="uid://b3ruiflgfd1q6"]
+
+[ext_resource type="Script" uid="uid://bq3qp24iwlkjb" path="res://scripts/village.gd" id="1_village"]
+[ext_resource type="Script" uid="uid://c80v5p1bam1xa" path="res://scripts/npc.gd" id="2_npc"]
+[ext_resource type="Script" uid="uid://dpgy3d56su1fx" path="res://scripts/player.gd" id="3_player"]
+[ext_resource type="PackedScene" path="res://scenes/word_puzzle.tscn" id="4_puzzle"]
+[ext_resource type="PackedScene" uid="uid://c0h8c45etk7t5" path="res://scenes/minigame_word_build.tscn" id="5_build"]
+[ext_resource type="PackedScene" uid="uid://mwprni3jwjis" path="res://scenes/monster.tscn" id="6_monster"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tree"]
+size = Vector2(60, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rock"]
+size = Vector2(62, 42)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
+size = Vector2(1800, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_gate_h"]
+size = Vector2(1240, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gate_post"]
+size = Vector2(26, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_v"]
+size = Vector2(40, 1200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fence_left"]
+size = Vector2(340, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fence_right"]
+size = Vector2(320, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_house_a"]
+size = Vector2(240, 220)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_house_b"]
+size = Vector2(280, 240)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hut_milo"]
+size = Vector2(220, 180)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hut_tuck"]
+size = Vector2(200, 180)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_world_h"]
+size = Vector2(3600, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_world_v"]
+size = Vector2(40, 2400)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_npc"]
+radius = 72.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_player"]
+radius = 14.0
+height = 40.0
+
+[node name="Village" type="Node2D" unique_id=2001496072]
+script = ExtResource("1_village")
+
+[node name="WildGround" type="ColorRect" parent="." unique_id=1001000001]
+offset_right = 3600.0
+offset_bottom = 2400.0
+mouse_filter = 2
+color = Color(0.6, 0.76, 0.51, 1)
+
+[node name="Ground" type="ColorRect" parent="." unique_id=1351978932]
+offset_right = 1800.0
+offset_bottom = 1200.0
+mouse_filter = 2
+color = Color(0.72, 0.87, 0.62, 1)
+
+[node name="Paths" type="Node2D" parent="." unique_id=1267343520]
+
+[node name="PathVertical" type="ColorRect" parent="Paths" unique_id=126602376]
+offset_left = 852.0
+offset_top = 340.0
+offset_right = 948.0
+offset_bottom = 940.0
+mouse_filter = 2
+color = Color(0.87, 0.8, 0.63, 1)
+
+[node name="PathHorizontal" type="ColorRect" parent="Paths" unique_id=1754849146]
+offset_left = 300.0
+offset_top = 606.0
+offset_right = 1500.0
+offset_bottom = 674.0
+mouse_filter = 2
+color = Color(0.87, 0.8, 0.63, 1)
+
+[node name="Flowers" type="Node2D" parent="." unique_id=1878057758]
+
+[node name="Flower1" type="ColorRect" parent="Flowers" unique_id=37039064]
+offset_left = 180.0
+offset_top = 480.0
+offset_right = 196.0
+offset_bottom = 496.0
+mouse_filter = 2
+color = Color(0.96, 0.62, 0.78, 1)
+
+[node name="Flower2" type="ColorRect" parent="Flowers" unique_id=263961493]
+offset_left = 1080.0
+offset_top = 500.0
+offset_right = 1096.0
+offset_bottom = 516.0
+mouse_filter = 2
+color = Color(0.99, 0.85, 0.36, 1)
+
+[node name="Flower3" type="ColorRect" parent="Flowers" unique_id=1830173079]
+offset_left = 260.0
+offset_top = 900.0
+offset_right = 276.0
+offset_bottom = 916.0
+mouse_filter = 2
+color = Color(0.99, 0.85, 0.36, 1)
+
+[node name="Flower4" type="ColorRect" parent="Flowers" unique_id=2120476520]
+offset_left = 1560.0
+offset_top = 900.0
+offset_right = 1576.0
+offset_bottom = 916.0
+mouse_filter = 2
+color = Color(0.96, 0.62, 0.78, 1)
+
+[node name="Flower5" type="ColorRect" parent="Flowers" unique_id=126568714]
+offset_left = 640.0
+offset_top = 220.0
+offset_right = 656.0
+offset_bottom = 236.0
+mouse_filter = 2
+color = Color(0.62, 0.78, 0.98, 1)
+
+[node name="Flower6" type="ColorRect" parent="Flowers" unique_id=836292120]
+offset_left = 1180.0
+offset_top = 1080.0
+offset_right = 1196.0
+offset_bottom = 1096.0
+mouse_filter = 2
+color = Color(0.62, 0.78, 0.98, 1)
+
+[node name="Wild" type="Node2D" parent="." unique_id=1001000002]
+
+[node name="WildPathA" type="ColorRect" parent="Wild" unique_id=1001000003]
+offset_left = 1250.0
+offset_top = 1180.0
+offset_right = 1430.0
+offset_bottom = 1560.0
+mouse_filter = 2
+color = Color(0.85, 0.78, 0.6, 1)
+
+[node name="WildPathB" type="ColorRect" parent="Wild" unique_id=1001000004]
+offset_left = 420.0
+offset_top = 1500.0
+offset_right = 3020.0
+offset_bottom = 1560.0
+mouse_filter = 2
+color = Color(0.85, 0.78, 0.6, 1)
+
+[node name="Trees" type="Node2D" parent="Wild" unique_id=1001000010]
+
+[node name="Tree1" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000011]
+position = Vector2(220, 1500)
+
+[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree1" unique_id=1001000012]
+color = Color(0.28, 0.53, 0.33, 1)
+polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
+
+[node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree1" unique_id=1001000013]
+offset_left = -8.0
+offset_top = 30.0
+offset_right = 8.0
+offset_bottom = 52.0
+mouse_filter = 2
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Trees/Tree1" unique_id=1001000014]
+shape = SubResource("RectangleShape2D_tree")
+
+[node name="Tree2" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000015]
+position = Vector2(480, 1720)
+
+[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree2" unique_id=1001000016]
+color = Color(0.28, 0.53, 0.33, 1)
+polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
+
+[node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree2" unique_id=1001000017]
+offset_left = -8.0
+offset_top = 30.0
+offset_right = 8.0
+offset_bottom = 52.0
+mouse_filter = 2
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Trees/Tree2" unique_id=1001000018]
+shape = SubResource("RectangleShape2D_tree")
+
+[node name="Tree3" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000019]
+position = Vector2(830, 1370)
+
+[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree3" unique_id=1001000020]
+color = Color(0.28, 0.53, 0.33, 1)
+polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
+
+[node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree3" unique_id=1001000021]
+offset_left = -8.0
+offset_top = 30.0
+offset_right = 8.0
+offset_bottom = 52.0
+mouse_filter = 2
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Trees/Tree3" unique_id=1001000022]
+shape = SubResource("RectangleShape2D_tree")
+
+[node name="Tree4" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000023]
+position = Vector2(1740, 1330)
+
+[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree4" unique_id=1001000024]
+color = Color(0.28, 0.53, 0.33, 1)
+polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
+
+[node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree4" unique_id=1001000025]
+offset_left = -8.0
+offset_top = 30.0
+offset_right = 8.0
+offset_bottom = 52.0
+mouse_filter = 2
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Trees/Tree4" unique_id=1001000026]
+shape = SubResource("RectangleShape2D_tree")
+
+[node name="Tree5" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000027]
+position = Vector2(2500, 1370)
+
+[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree5" unique_id=1001000028]
+color = Color(0.28, 0.53, 0.33, 1)
+polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
+
+[node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree5" unique_id=1001000029]
+offset_left = -8.0
+offset_top = 30.0
+offset_right = 8.0
+offset_bottom = 52.0
+mouse_filter = 2
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Trees/Tree5" unique_id=1001000030]
+shape = SubResource("RectangleShape2D_tree")
+
+[node name="Tree6" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000031]
+position = Vector2(3120, 1720)
+
+[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree6" unique_id=1001000032]
+color = Color(0.28, 0.53, 0.33, 1)
+polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
+
+[node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree6" unique_id=1001000033]
+offset_left = -8.0
+offset_top = 30.0
+offset_right = 8.0
+offset_bottom = 52.0
+mouse_filter = 2
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Trees/Tree6" unique_id=1001000034]
+shape = SubResource("RectangleShape2D_tree")
+
+[node name="Tree7" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000035]
+position = Vector2(1560, 1780)
+
+[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree7" unique_id=1001000036]
+color = Color(0.28, 0.53, 0.33, 1)
+polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
+
+[node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree7" unique_id=1001000037]
+offset_left = -8.0
+offset_top = 30.0
+offset_right = 8.0
+offset_bottom = 52.0
+mouse_filter = 2
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Trees/Tree7" unique_id=1001000038]
+shape = SubResource("RectangleShape2D_tree")
+
+[node name="Tree8" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000039]
+position = Vector2(700, 2080)
+
+[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree8" unique_id=1001000040]
+color = Color(0.28, 0.53, 0.33, 1)
+polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
+
+[node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree8" unique_id=1001000041]
+offset_left = -8.0
+offset_top = 30.0
+offset_right = 8.0
+offset_bottom = 52.0
+mouse_filter = 2
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Trees/Tree8" unique_id=1001000042]
+shape = SubResource("RectangleShape2D_tree")
+
+[node name="Tree9" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000043]
+position = Vector2(1900, 2080)
+
+[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree9" unique_id=1001000044]
+color = Color(0.28, 0.53, 0.33, 1)
+polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
+
+[node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree9" unique_id=1001000045]
+offset_left = -8.0
+offset_top = 30.0
+offset_right = 8.0
+offset_bottom = 52.0
+mouse_filter = 2
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Trees/Tree9" unique_id=1001000046]
+shape = SubResource("RectangleShape2D_tree")
+
+[node name="Tree10" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000047]
+position = Vector2(2760, 2140)
+
+[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree10" unique_id=1001000048]
+color = Color(0.28, 0.53, 0.33, 1)
+polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
+
+[node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree10" unique_id=1001000049]
+offset_left = -8.0
+offset_top = 30.0
+offset_right = 8.0
+offset_bottom = 52.0
+mouse_filter = 2
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Trees/Tree10" unique_id=1001000050]
+shape = SubResource("RectangleShape2D_tree")
+
+[node name="Rocks" type="Node2D" parent="Wild" unique_id=1001000060]
+
+[node name="Rock1" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000061]
+position = Vector2(600, 1600)
+
+[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock1" unique_id=1001000062]
+color = Color(0.62, 0.64, 0.68, 1)
+polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock1" unique_id=1001000063]
+shape = SubResource("RectangleShape2D_rock")
+
+[node name="Rock2" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000064]
+position = Vector2(1080, 1880)
+
+[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock2" unique_id=1001000065]
+color = Color(0.62, 0.64, 0.68, 1)
+polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock2" unique_id=1001000066]
+shape = SubResource("RectangleShape2D_rock")
+
+[node name="Rock3" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000067]
+position = Vector2(2280, 1250)
+
+[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock3" unique_id=1001000068]
+color = Color(0.62, 0.64, 0.68, 1)
+polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock3" unique_id=1001000069]
+shape = SubResource("RectangleShape2D_rock")
+
+[node name="Rock4" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000070]
+position = Vector2(2880, 1600)
+
+[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock4" unique_id=1001000071]
+color = Color(0.62, 0.64, 0.68, 1)
+polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock4" unique_id=1001000072]
+shape = SubResource("RectangleShape2D_rock")
+
+[node name="Rock5" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000073]
+position = Vector2(3340, 1500)
+
+[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock5" unique_id=1001000074]
+color = Color(0.62, 0.64, 0.68, 1)
+polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock5" unique_id=1001000075]
+shape = SubResource("RectangleShape2D_rock")
+
+[node name="Rock6" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000076]
+position = Vector2(1300, 2140)
+
+[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock6" unique_id=1001000077]
+color = Color(0.62, 0.64, 0.68, 1)
+polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock6" unique_id=1001000078]
+shape = SubResource("RectangleShape2D_rock")
+
+[node name="Rock7" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000079]
+position = Vector2(2380, 1940)
+
+[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock7" unique_id=1001000080]
+color = Color(0.62, 0.64, 0.68, 1)
+polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
+
+[node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock7" unique_id=1001000081]
+shape = SubResource("RectangleShape2D_rock")
+
+[node name="Objects" type="Node2D" parent="." unique_id=1240749795]
+
+[node name="HedgeTop" type="StaticBody2D" parent="Objects" unique_id=1827480212]
+position = Vector2(900, 20)
+
+[node name="Bar" type="ColorRect" parent="Objects/HedgeTop" unique_id=422191251]
+offset_left = -900.0
+offset_top = -20.0
+offset_right = 900.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.36, 0.6, 0.36, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Objects/HedgeTop" unique_id=181822653]
+shape = SubResource("RectangleShape2D_wall_h")
+
+[node name="HedgeBottom" type="StaticBody2D" parent="Objects" unique_id=608880569]
+position = Vector2(620, 1180)
+
+[node name="Bar" type="ColorRect" parent="Objects/HedgeBottom" unique_id=1932076727]
+offset_left = -620.0
+offset_top = -20.0
+offset_right = 620.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.36, 0.6, 0.36, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Objects/HedgeBottom" unique_id=1332025550]
+shape = SubResource("RectangleShape2D_wall_gate_h")
+
+[node name="GatePostLeft" type="StaticBody2D" parent="Objects" unique_id=1001000090]
+position = Vector2(1253, 1180)
+
+[node name="Bar" type="ColorRect" parent="Objects/GatePostLeft" unique_id=1001000091]
+offset_left = -13.0
+offset_top = -32.0
+offset_right = 13.0
+offset_bottom = 32.0
+mouse_filter = 2
+color = Color(0.78, 0.62, 0.4, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Objects/GatePostLeft" unique_id=1001000092]
+shape = SubResource("RectangleShape2D_gate_post")
+
+[node name="GatePostRight" type="StaticBody2D" parent="Objects" unique_id=1001000093]
+position = Vector2(1427, 1180)
+
+[node name="Bar" type="ColorRect" parent="Objects/GatePostRight" unique_id=1001000094]
+offset_left = -13.0
+offset_top = -32.0
+offset_right = 13.0
+offset_bottom = 32.0
+mouse_filter = 2
+color = Color(0.78, 0.62, 0.4, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Objects/GatePostRight" unique_id=1001000095]
+shape = SubResource("RectangleShape2D_gate_post")
+
+[node name="HedgeLeft" type="StaticBody2D" parent="Objects" unique_id=1935121003]
+position = Vector2(20, 600)
+
+[node name="Bar" type="ColorRect" parent="Objects/HedgeLeft" unique_id=1214276568]
+offset_left = -20.0
+offset_top = -600.0
+offset_right = 20.0
+offset_bottom = 600.0
+mouse_filter = 2
+color = Color(0.36, 0.6, 0.36, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Objects/HedgeLeft" unique_id=872789674]
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="HedgeRight" type="StaticBody2D" parent="Objects" unique_id=951180676]
+position = Vector2(1780, 600)
+
+[node name="Bar" type="ColorRect" parent="Objects/HedgeRight" unique_id=1540061085]
+offset_left = -20.0
+offset_top = -600.0
+offset_right = 20.0
+offset_bottom = 600.0
+mouse_filter = 2
+color = Color(0.36, 0.6, 0.36, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Objects/HedgeRight" unique_id=173676129]
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="FenceLeft" type="StaticBody2D" parent="Objects" unique_id=1260167827]
+position = Vector2(230, 640)
+
+[node name="Bar" type="ColorRect" parent="Objects/FenceLeft" unique_id=1662860134]
+offset_left = -170.0
+offset_top = -20.0
+offset_right = 170.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.8, 0.63, 0.42, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Objects/FenceLeft" unique_id=1405054783]
+shape = SubResource("RectangleShape2D_fence_left")
+
+[node name="FenceRight" type="StaticBody2D" parent="Objects" unique_id=2124408995]
+position = Vector2(1580, 660)
+
+[node name="Bar" type="ColorRect" parent="Objects/FenceRight" unique_id=1037326198]
+offset_left = -160.0
+offset_top = -20.0
+offset_right = 160.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.8, 0.63, 0.42, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Objects/FenceRight" unique_id=417680173]
+shape = SubResource("RectangleShape2D_fence_right")
+
+[node name="HouseStella" type="StaticBody2D" parent="Objects" unique_id=777742641]
+position = Vector2(420, 310)
+
+[node name="Body" type="ColorRect" parent="Objects/HouseStella" unique_id=200318929]
+offset_left = -120.0
+offset_top = -110.0
+offset_right = 120.0
+offset_bottom = 110.0
+mouse_filter = 2
+color = Color(0.99, 0.95, 0.86, 1)
+
+[node name="Roof" type="Polygon2D" parent="Objects/HouseStella" unique_id=675177389]
+position = Vector2(0, -110)
+color = Color(0.85, 0.45, 0.36, 1)
+polygon = PackedVector2Array(-160, 0, 160, 0, 0, -130)
+
+[node name="Door" type="ColorRect" parent="Objects/HouseStella" unique_id=1382546663]
+offset_left = -28.0
+offset_top = 40.0
+offset_right = 28.0
+offset_bottom = 110.0
+mouse_filter = 2
+color = Color(0.62, 0.44, 0.29, 1)
+
+[node name="Window" type="ColorRect" parent="Objects/HouseStella" unique_id=1577039986]
+offset_left = -92.0
+offset_top = -40.0
+offset_right = -40.0
+offset_bottom = 12.0
+mouse_filter = 2
+color = Color(0.63, 0.83, 0.95, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Objects/HouseStella" unique_id=2075945668]
+shape = SubResource("RectangleShape2D_house_a")
+
+[node name="HouseBram" type="StaticBody2D" parent="Objects" unique_id=1069060551]
+position = Vector2(1380, 340)
+
+[node name="Body" type="ColorRect" parent="Objects/HouseBram" unique_id=442829522]
+offset_left = -140.0
+offset_top = -120.0
+offset_right = 140.0
+offset_bottom = 120.0
+mouse_filter = 2
+color = Color(0.99, 0.9, 0.78, 1)
+
+[node name="Roof" type="Polygon2D" parent="Objects/HouseBram" unique_id=582546228]
+position = Vector2(0, -120)
+color = Color(0.55, 0.45, 0.8, 1)
+polygon = PackedVector2Array(-180, 0, 180, 0, 0, -140)
+
+[node name="Door" type="ColorRect" parent="Objects/HouseBram" unique_id=1595525289]
+offset_left = -30.0
+offset_top = 46.0
+offset_right = 30.0
+offset_bottom = 120.0
+mouse_filter = 2
+color = Color(0.62, 0.44, 0.29, 1)
+
+[node name="Window" type="ColorRect" parent="Objects/HouseBram" unique_id=877063585]
+offset_left = 44.0
+offset_top = -46.0
+offset_right = 100.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.63, 0.83, 0.95, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Objects/HouseBram" unique_id=1118708635]
+shape = SubResource("RectangleShape2D_house_b")
+
+[node name="HutMilo" type="StaticBody2D" parent="Objects" unique_id=1539797393]
+position = Vector2(620, 910)
+
+[node name="Body" type="ColorRect" parent="Objects/HutMilo" unique_id=257607304]
+offset_left = -110.0
+offset_top = -90.0
+offset_right = 110.0
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.97, 0.86, 0.72, 1)
+
+[node name="Roof" type="Polygon2D" parent="Objects/HutMilo" unique_id=1102402414]
+position = Vector2(0, -90)
+color = Color(0.42, 0.66, 0.5, 1)
+polygon = PackedVector2Array(-140, 0, 140, 0, 0, -110)
+
+[node name="Door" type="ColorRect" parent="Objects/HutMilo" unique_id=1658723442]
+offset_left = -24.0
+offset_top = 28.0
+offset_right = 24.0
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.62, 0.44, 0.29, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Objects/HutMilo" unique_id=193362682]
+shape = SubResource("RectangleShape2D_hut_milo")
+
+[node name="HutTuck" type="StaticBody2D" parent="Objects" unique_id=1347142687]
+position = Vector2(1280, 850)
+
+[node name="Body" type="ColorRect" parent="Objects/HutTuck" unique_id=1045087494]
+offset_left = -100.0
+offset_top = -90.0
+offset_right = 100.0
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.95, 0.92, 0.8, 1)
+
+[node name="Roof" type="Polygon2D" parent="Objects/HutTuck" unique_id=395389070]
+position = Vector2(0, -90)
+color = Color(0.9, 0.62, 0.3, 1)
+polygon = PackedVector2Array(-130, 0, 130, 0, 0, -100)
+
+[node name="Door" type="ColorRect" parent="Objects/HutTuck" unique_id=1446372498]
+offset_left = -22.0
+offset_top = 30.0
+offset_right = 22.0
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0.62, 0.44, 0.29, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="Objects/HutTuck" unique_id=652200806]
+shape = SubResource("RectangleShape2D_hut_tuck")
+
+[node name="Monsters" type="Node2D" parent="." unique_id=1001000100]
+
+[node name="MossMuncher" parent="Monsters" unique_id=1001000101 instance=ExtResource("6_monster")]
+position = Vector2(640, 1420)
+display_name = "Moss Muncher"
+body_color = Color(0.62, 0.78, 0.4, 1)
+
+[node name="BrambleSnapper" parent="Monsters" unique_id=1001000102 instance=ExtResource("6_monster")]
+position = Vector2(1500, 1760)
+display_name = "Bramble Snapper"
+word_level = 2
+body_color = Color(0.9, 0.55, 0.35, 1)
+
+[node name="PuddleProwler" parent="Monsters" unique_id=1001000103 instance=ExtResource("6_monster")]
+position = Vector2(2050, 1300)
+display_name = "Puddle Prowler"
+word_level = 2
+max_hits = 3
+body_color = Color(0.42, 0.72, 0.9, 1)
+
+[node name="StoneStomper" parent="Monsters" unique_id=1001000104 instance=ExtResource("6_monster")]
+position = Vector2(2600, 1720)
+display_name = "Stone Stomper"
+word_level = 3
+max_hits = 3
+body_color = Color(0.62, 0.58, 0.72, 1)
+
+[node name="TwigTangle" parent="Monsters" unique_id=1001000105 instance=ExtResource("6_monster")]
+position = Vector2(1150, 2150)
+display_name = "Twig Tangle"
+max_hits = 3
+body_color = Color(0.75, 0.5, 0.85, 1)
+
+[node name="WorldBounds" type="Node2D" parent="." unique_id=1001000120]
+
+[node name="WallTop" type="StaticBody2D" parent="WorldBounds" unique_id=1001000121]
+position = Vector2(1800, 20)
+
+[node name="Bar" type="ColorRect" parent="WorldBounds/WallTop" unique_id=1001000122]
+offset_left = -1800.0
+offset_top = -20.0
+offset_right = 1800.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.4, 0.58, 0.4, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="WorldBounds/WallTop" unique_id=1001000123]
+shape = SubResource("RectangleShape2D_world_h")
+
+[node name="WallBottom" type="StaticBody2D" parent="WorldBounds" unique_id=1001000124]
+position = Vector2(1800, 2380)
+
+[node name="Bar" type="ColorRect" parent="WorldBounds/WallBottom" unique_id=1001000125]
+offset_left = -1800.0
+offset_top = -20.0
+offset_right = 1800.0
+offset_bottom = 20.0
+mouse_filter = 2
+color = Color(0.4, 0.58, 0.4, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="WorldBounds/WallBottom" unique_id=1001000126]
+shape = SubResource("RectangleShape2D_world_h")
+
+[node name="WallLeft" type="StaticBody2D" parent="WorldBounds" unique_id=1001000127]
+position = Vector2(20, 1200)
+
+[node name="Bar" type="ColorRect" parent="WorldBounds/WallLeft" unique_id=1001000128]
+offset_left = -20.0
+offset_top = -1200.0
+offset_right = 20.0
+offset_bottom = 1200.0
+mouse_filter = 2
+color = Color(0.4, 0.58, 0.4, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="WorldBounds/WallLeft" unique_id=1001000129]
+shape = SubResource("RectangleShape2D_world_v")
+
+[node name="WallRight" type="StaticBody2D" parent="WorldBounds" unique_id=1001000130]
+position = Vector2(3580, 1200)
+
+[node name="Bar" type="ColorRect" parent="WorldBounds/WallRight" unique_id=1001000131]
+offset_left = -20.0
+offset_top = -1200.0
+offset_right = 20.0
+offset_bottom = 1200.0
+mouse_filter = 2
+color = Color(0.4, 0.58, 0.4, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="WorldBounds/WallRight" unique_id=1001000132]
+shape = SubResource("RectangleShape2D_world_v")
+
+[node name="NPCs" type="Node2D" parent="." unique_id=1387518660]
+
+[node name="Nella" type="Area2D" parent="NPCs" unique_id=122736418 groups=["npc"]]
+position = Vector2(900, 320)
+script = ExtResource("2_npc")
+display_name = "Nella"
+quest_word = "fish"
+quest_hint = "sh makes ONE sound: /sh/. Guess the 4-letter word, then press Enter."
+
+[node name="Body" type="ColorRect" parent="NPCs/Nella" unique_id=948633912]
+offset_left = -20.0
+offset_top = -6.0
+offset_right = 20.0
+offset_bottom = 46.0
+mouse_filter = 2
+color = Color(0.98, 0.66, 0.78, 1)
+
+[node name="Head" type="Polygon2D" parent="NPCs/Nella" unique_id=890756849]
+position = Vector2(0, -22)
+color = Color(0.99, 0.86, 0.72, 1)
+polygon = PackedVector2Array(18, 0, 12.7, -12.7, 0, -18, -12.7, -12.7, -18, 0, -12.7, 12.7, 0, 18, 12.7, 12.7)
+
+[node name="DoneMark" type="Polygon2D" parent="NPCs/Nella" unique_id=1750521578]
+visible = false
+position = Vector2(0, -66)
+color = Color(0.99, 0.82, 0.28, 1)
+polygon = PackedVector2Array(0, -14, 11, 0, 0, 14, -11, 0)
+
+[node name="PromptBox" type="ColorRect" parent="NPCs/Nella" unique_id=1501559164]
+visible = false
+offset_left = -150.0
+offset_top = -118.0
+offset_right = 150.0
+offset_bottom = -88.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0.92)
+
+[node name="Prompt" type="Label" parent="NPCs/Nella" unique_id=1556516405]
+visible = false
+offset_left = -150.0
+offset_top = -118.0
+offset_right = 150.0
+offset_bottom = -88.0
+theme_override_colors/font_color = Color(0.2, 0.16, 0.34, 1)
+theme_override_font_sizes/font_size = 14
+text = "Press E to play with Nella"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Collision" type="CollisionShape2D" parent="NPCs/Nella" unique_id=1220002824]
+shape = SubResource("CircleShape2D_npc")
+
+[node name="Pico" type="Area2D" parent="NPCs" unique_id=1692489969 groups=["npc"]]
+position = Vector2(700, 640)
+script = ExtResource("2_npc")
+display_name = "Pico"
+quest_word = "jump"
+quest_hint = "m-p blend at the end: say both sounds and stop the air after p."
+
+[node name="Body" type="ColorRect" parent="NPCs/Pico" unique_id=132628342]
+offset_left = -20.0
+offset_top = -6.0
+offset_right = 20.0
+offset_bottom = 46.0
+mouse_filter = 2
+color = Color(0.5, 0.78, 0.95, 1)
+
+[node name="Head" type="Polygon2D" parent="NPCs/Pico" unique_id=1338027374]
+position = Vector2(0, -22)
+color = Color(0.99, 0.86, 0.72, 1)
+polygon = PackedVector2Array(18, 0, 12.7, -12.7, 0, -18, -12.7, -12.7, -18, 0, -12.7, 12.7, 0, 18, 12.7, 12.7)
+
+[node name="DoneMark" type="Polygon2D" parent="NPCs/Pico" unique_id=1883677542]
+visible = false
+position = Vector2(0, -66)
+color = Color(0.99, 0.82, 0.28, 1)
+polygon = PackedVector2Array(0, -14, 11, 0, 0, 14, -11, 0)
+
+[node name="PromptBox" type="ColorRect" parent="NPCs/Pico" unique_id=1926227745]
+visible = false
+offset_left = -150.0
+offset_top = -118.0
+offset_right = 150.0
+offset_bottom = -88.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0.92)
+
+[node name="Prompt" type="Label" parent="NPCs/Pico" unique_id=1637172462]
+visible = false
+offset_left = -150.0
+offset_top = -118.0
+offset_right = 150.0
+offset_bottom = -88.0
+theme_override_colors/font_color = Color(0.2, 0.16, 0.34, 1)
+theme_override_font_sizes/font_size = 14
+text = "Press E to play with Pico"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Collision" type="CollisionShape2D" parent="NPCs/Pico" unique_id=1541501571]
+shape = SubResource("CircleShape2D_npc")
+
+[node name="Tuck" type="Area2D" parent="NPCs" unique_id=1326585327 groups=["npc"]]
+position = Vector2(1200, 680)
+script = ExtResource("2_npc")
+display_name = "Tuck"
+quest_word = "frog"
+quest_hint = "f-r blend at the start; o says /o/ like octopus."
+
+[node name="Body" type="ColorRect" parent="NPCs/Tuck" unique_id=1969060956]
+offset_left = -20.0
+offset_top = -6.0
+offset_right = 20.0
+offset_bottom = 46.0
+mouse_filter = 2
+color = Color(0.6, 0.85, 0.55, 1)
+
+[node name="Head" type="Polygon2D" parent="NPCs/Tuck" unique_id=1911136287]
+position = Vector2(0, -22)
+color = Color(0.99, 0.86, 0.72, 1)
+polygon = PackedVector2Array(18, 0, 12.7, -12.7, 0, -18, -12.7, -12.7, -18, 0, -12.7, 12.7, 0, 18, 12.7, 12.7)
+
+[node name="DoneMark" type="Polygon2D" parent="NPCs/Tuck" unique_id=1146347350]
+visible = false
+position = Vector2(0, -66)
+color = Color(0.99, 0.82, 0.28, 1)
+polygon = PackedVector2Array(0, -14, 11, 0, 0, 14, -11, 0)
+
+[node name="PromptBox" type="ColorRect" parent="NPCs/Tuck" unique_id=410417623]
+visible = false
+offset_left = -150.0
+offset_top = -118.0
+offset_right = 150.0
+offset_bottom = -88.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0.92)
+
+[node name="Prompt" type="Label" parent="NPCs/Tuck" unique_id=412620781]
+visible = false
+offset_left = -150.0
+offset_top = -118.0
+offset_right = 150.0
+offset_bottom = -88.0
+theme_override_colors/font_color = Color(0.2, 0.16, 0.34, 1)
+theme_override_font_sizes/font_size = 14
+text = "Press E to play with Tuck"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Collision" type="CollisionShape2D" parent="NPCs/Tuck" unique_id=832994963]
+shape = SubResource("CircleShape2D_npc")
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1059467547 groups=["player"]]
+position = Vector2(900, 620)
+script = ExtResource("3_player")
+
+[node name="Visual" type="Node2D" parent="Player" unique_id=1257529395]
+
+[node name="Body" type="Polygon2D" parent="Player/Visual" unique_id=2092313772]
+color = Color(0.32, 0.42, 0.85, 1)
+polygon = PackedVector2Array(0, -18, 14, 14, 0, 6, -14, 14)
+
+[node name="Collision" type="CollisionShape2D" parent="Player" unique_id=239900172]
+shape = SubResource("CapsuleShape2D_player")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=15137792]
+position = Vector2(900, 620)
+limit_left = 0
+limit_top = 0
+limit_right = 3600
+limit_bottom = 2400
+limit_smoothed = true
+
+[node name="PuzzleLayer" type="CanvasLayer" parent="." unique_id=257002478]
+layer = 5
+
+[node name="WordPuzzle" parent="PuzzleLayer" unique_id=934750132 instance=ExtResource("4_puzzle")]
+visible = false
+
+[node name="WordBuild" parent="PuzzleLayer" unique_id=1001000140 instance=ExtResource("5_build")]
+visible = false
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1943766610]
+layer = 10
+
+[node name="HUDPanel" type="ColorRect" parent="HUD" unique_id=1462713312]
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 600.0
+offset_bottom = 232.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0.86)
+
+[node name="HUDBox" type="VBoxContainer" parent="HUD" unique_id=928107818]
+offset_left = 24.0
+offset_top = 22.0
+offset_right = 588.0
+offset_bottom = 222.0
+theme_override_constants/separation = 4
+
+[node name="QuestsLabel" type="Label" parent="HUD/HUDBox" unique_id=862183817]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24, 0.18, 0.42, 1)
+theme_override_font_sizes/font_size = 22
+text = "Quests: 0 / 3"
+
+[node name="CoinsLabel" type="Label" parent="HUD/HUDBox" unique_id=1334212244]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.5, 0.1, 1)
+theme_override_font_sizes/font_size = 22
+text = "Coins: 0"
+
+[node name="GoldLabel" type="Label" parent="HUD/HUDBox" unique_id=1001000150]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.65, 0.12, 1)
+theme_override_font_sizes/font_size = 22
+text = "Gold: 0"
+
+[node name="ResourceLabel" type="Label" parent="HUD/HUDBox" unique_id=1001000151]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.32, 0.5, 0.24, 1)
+theme_override_font_sizes/font_size = 22
+text = "Wood: 0"
+
+[node name="StatusLabel" type="Label" parent="HUD/HUDBox" unique_id=760510960]
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.33, 0.33, 0.45, 1)
+theme_override_font_sizes/font_size = 18
+text = "Walk with W A S D or the arrow keys."
+autowrap_mode = 2

@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://mwprni3jwjis"]
+
+[ext_resource type="Script" uid="uid://cqx8dcr71grkv" path="res://scripts/monster.gd" id="1_monster"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_monster"]
+radius = 26.0
+
+[node name="Monster" type="Area2D" unique_id=1261010315 groups=["monster"]]
+script = ExtResource("1_monster")
+
+[node name="Visual" type="Node2D" parent="." unique_id=2071554496]
+
+[node name="Body" type="Polygon2D" parent="Visual" unique_id=1122949769]
+color = Color(0.86, 0.4, 0.56, 1)
+polygon = PackedVector2Array(28, 0, 18, 20, -18, 20, -28, 0, -18, -20, 18, -20)
+
+[node name="Belly" type="Polygon2D" parent="Visual" unique_id=407123727]
+color = Color(1, 0.93, 0.8, 1)
+polygon = PackedVector2Array(16, 4, 9, 15, -9, 15, -16, 4, -9, -6, 9, -6)
+
+[node name="Eye" type="ColorRect" parent="Visual" unique_id=1994984131]
+offset_left = -14.0
+offset_top = -14.0
+offset_right = -4.0
+offset_bottom = -4.0
+mouse_filter = 2
+
+[node name="Eye2" type="ColorRect" parent="Visual" unique_id=1241417129]
+offset_left = 4.0
+offset_top = -14.0
+offset_right = 14.0
+offset_bottom = -4.0
+mouse_filter = 2
+
+[node name="Pupil" type="ColorRect" parent="Visual" unique_id=1618453156]
+offset_left = -11.0
+offset_top = -11.0
+offset_right = -7.0
+offset_bottom = -7.0
+mouse_filter = 2
+color = Color(0.16, 0.12, 0.26, 1)
+
+[node name="Pupil2" type="ColorRect" parent="Visual" unique_id=565321361]
+offset_left = 7.0
+offset_top = -11.0
+offset_right = 11.0
+offset_bottom = -7.0
+mouse_filter = 2
+color = Color(0.16, 0.12, 0.26, 1)
+
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=2046733072]
+shape = SubResource("CircleShape2D_monster")
+
+[node name="Tag" type="Label" parent="." unique_id=2107371250]
+offset_left = -130.0
+offset_top = -106.0
+offset_right = 130.0
+offset_bottom = -78.0
+theme_override_colors/font_color = Color(0.2, 0.12, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Wild Thing"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HitsLabel" type="Label" parent="." unique_id=1075349784]
+offset_left = -130.0
+offset_top = -78.0
+offset_right = 130.0
+offset_bottom = -50.0
+theme_override_colors/font_color = Color(0.6, 0.16, 0.28, 1)
+theme_override_font_sizes/font_size = 16
+text = "Hits: 2"
+horizontal_alignment = 1
+vertical_alignment = 1

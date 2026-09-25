@@ -1,0 +1,144 @@
+[gd_scene format=3 uid="uid://c0h8c45etk7t5"]
+
+[ext_resource type="Script" uid="uid://cdusdpvsdt7iu" path="res://scripts/minigame_word_build.gd" id="1_build"]
+
+[node name="WordBuild" type="Control" unique_id=287787756]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_build")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=2003182907]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.11, 0.09, 0.24, 0.86)
+
+[node name="Card" type="ColorRect" parent="." unique_id=64911437]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -430.0
+offset_top = -392.0
+offset_right = 430.0
+offset_bottom = 392.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.94, 0.97, 1, 1)
+
+[node name="Center" type="CenterContainer" parent="." unique_id=316147362]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Center" unique_id=2146965642]
+layout_mode = 2
+theme_override_constants/margin_left = 26
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 26
+theme_override_constants/margin_bottom = 20
+
+[node name="Root" type="VBoxContainer" parent="Center/Margin" unique_id=1850494499]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Center/Margin/Root" unique_id=110899725]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24, 0.16, 0.5, 1)
+theme_override_font_sizes/font_size = 30
+text = "Word Build"
+horizontal_alignment = 1
+
+[node name="SubHeader" type="Label" parent="Center/Margin/Root" unique_id=1254024147]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.44, 0.34, 0.62, 1)
+theme_override_font_sizes/font_size = 18
+text = "Hits left: 2"
+horizontal_alignment = 1
+
+[node name="Hint" type="Label" parent="Center/Margin/Root" unique_id=759851288]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(770, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.16, 0.4, 0.34, 1)
+theme_override_font_sizes/font_size = 20
+text = "Meaning hint"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SoundCaption" type="Label" parent="Center/Margin/Root" unique_id=1509201797]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(770, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.33, 0.33, 0.45, 1)
+theme_override_font_sizes/font_size = 17
+text = "Sounds in order"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SoundRow" type="HBoxContainer" parent="Center/Margin/Root" unique_id=788999002]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="SlotRow" type="HBoxContainer" parent="Center/Margin/Root" unique_id=338594549]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Message" type="Label" parent="Center/Margin/Root" unique_id=119282953]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(770, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.42, 0.62, 1)
+theme_override_font_sizes/font_size = 18
+text = "Tap the tiles in order."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="TilePool" type="HFlowContainer" parent="Center/Margin/Root" unique_id=485332451]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(770, 0)
+layout_mode = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 10
+alignment = 1
+
+[node name="Buttons" type="HBoxContainer" parent="Center/Margin/Root" unique_id=1099129365]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="BackButton" type="Button" parent="Center/Margin/Root/Buttons" unique_id=1140103186]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 52)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 20
+text = "Take one back"
+
+[node name="FleeButton" type="Button" parent="Center/Margin/Root/Buttons" unique_id=1034014401]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 52)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 20
+text = "Run away (Esc)"
