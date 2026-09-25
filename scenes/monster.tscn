@@ -14,10 +14,6 @@ script = ExtResource("1_monster")
 color = Color(0.86, 0.4, 0.56, 1)
 polygon = PackedVector2Array(28, 0, 18, 20, -18, 20, -28, 0, -18, -20, 18, -20)
 
-[node name="Belly" type="Polygon2D" parent="Visual" unique_id=407123727]
-color = Color(1, 0.93, 0.8, 1)
-polygon = PackedVector2Array(16, 4, 9, 15, -9, 15, -16, 4, -9, -6, 9, -6)
-
 [node name="Eye" type="ColorRect" parent="Visual" unique_id=1994984131]
 offset_left = -14.0
 offset_top = -14.0

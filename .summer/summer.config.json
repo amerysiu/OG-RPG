@@ -1,0 +1,17 @@
+{
+  "project_type": "Godot4_2D_Web",
+  "accessibility": {
+    "font_fallback": "res://fonts/OpenDyslexic-Regular.otf",
+    "theme_override": "res://themes/og_accessibility_theme.tres",
+    "letter_spacing_pixel_bonus": 3
+  },
+  "educational_rules": {
+    "framework": "Orton-Gillingham",
+    "non_punitive": true,
+    "prevent_countdown_timers": true,
+    "color_coding": {
+      "vowels": "pink_red",
+      "consonants": "high_contrast_white"
+    }
+  }
+}

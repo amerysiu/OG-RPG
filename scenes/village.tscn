@@ -162,9 +162,13 @@ color = Color(0.85, 0.78, 0.6, 1)
 [node name="Tree1" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000011]
 position = Vector2(220, 1500)
 
-[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree1" unique_id=1001000012]
+[node name="Canopy" type="ColorRect" parent="Wild/Trees/Tree1" unique_id=1001000012]
+offset_left = -42.0
+offset_top = -42.0
+offset_right = 42.0
+offset_bottom = 42.0
+mouse_filter = 2
 color = Color(0.28, 0.53, 0.33, 1)
-polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
 
 [node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree1" unique_id=1001000013]
 offset_left = -8.0
@@ -180,9 +184,13 @@ shape = SubResource("RectangleShape2D_tree")
 [node name="Tree2" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000015]
 position = Vector2(480, 1720)
 
-[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree2" unique_id=1001000016]
+[node name="Canopy" type="ColorRect" parent="Wild/Trees/Tree2" unique_id=1001000016]
+offset_left = -42.0
+offset_top = -42.0
+offset_right = 42.0
+offset_bottom = 42.0
+mouse_filter = 2
 color = Color(0.28, 0.53, 0.33, 1)
-polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
 
 [node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree2" unique_id=1001000017]
 offset_left = -8.0
@@ -198,9 +206,13 @@ shape = SubResource("RectangleShape2D_tree")
 [node name="Tree3" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000019]
 position = Vector2(830, 1370)
 
-[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree3" unique_id=1001000020]
+[node name="Canopy" type="ColorRect" parent="Wild/Trees/Tree3" unique_id=1001000020]
+offset_left = -42.0
+offset_top = -42.0
+offset_right = 42.0
+offset_bottom = 42.0
+mouse_filter = 2
 color = Color(0.28, 0.53, 0.33, 1)
-polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
 
 [node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree3" unique_id=1001000021]
 offset_left = -8.0
@@ -216,9 +228,13 @@ shape = SubResource("RectangleShape2D_tree")
 [node name="Tree4" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000023]
 position = Vector2(1740, 1330)
 
-[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree4" unique_id=1001000024]
+[node name="Canopy" type="ColorRect" parent="Wild/Trees/Tree4" unique_id=1001000024]
+offset_left = -42.0
+offset_top = -42.0
+offset_right = 42.0
+offset_bottom = 42.0
+mouse_filter = 2
 color = Color(0.28, 0.53, 0.33, 1)
-polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
 
 [node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree4" unique_id=1001000025]
 offset_left = -8.0
@@ -234,9 +250,13 @@ shape = SubResource("RectangleShape2D_tree")
 [node name="Tree5" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000027]
 position = Vector2(2500, 1370)
 
-[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree5" unique_id=1001000028]
+[node name="Canopy" type="ColorRect" parent="Wild/Trees/Tree5" unique_id=1001000028]
+offset_left = -42.0
+offset_top = -42.0
+offset_right = 42.0
+offset_bottom = 42.0
+mouse_filter = 2
 color = Color(0.28, 0.53, 0.33, 1)
-polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
 
 [node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree5" unique_id=1001000029]
 offset_left = -8.0
@@ -252,9 +272,13 @@ shape = SubResource("RectangleShape2D_tree")
 [node name="Tree6" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000031]
 position = Vector2(3120, 1720)
 
-[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree6" unique_id=1001000032]
+[node name="Canopy" type="ColorRect" parent="Wild/Trees/Tree6" unique_id=1001000032]
+offset_left = -42.0
+offset_top = -42.0
+offset_right = 42.0
+offset_bottom = 42.0
+mouse_filter = 2
 color = Color(0.28, 0.53, 0.33, 1)
-polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
 
 [node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree6" unique_id=1001000033]
 offset_left = -8.0
@@ -270,9 +294,13 @@ shape = SubResource("RectangleShape2D_tree")
 [node name="Tree7" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000035]
 position = Vector2(1560, 1780)
 
-[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree7" unique_id=1001000036]
+[node name="Canopy" type="ColorRect" parent="Wild/Trees/Tree7" unique_id=1001000036]
+offset_left = -42.0
+offset_top = -42.0
+offset_right = 42.0
+offset_bottom = 42.0
+mouse_filter = 2
 color = Color(0.28, 0.53, 0.33, 1)
-polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
 
 [node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree7" unique_id=1001000037]
 offset_left = -8.0
@@ -288,9 +316,13 @@ shape = SubResource("RectangleShape2D_tree")
 [node name="Tree8" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000039]
 position = Vector2(700, 2080)
 
-[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree8" unique_id=1001000040]
+[node name="Canopy" type="ColorRect" parent="Wild/Trees/Tree8" unique_id=1001000040]
+offset_left = -42.0
+offset_top = -42.0
+offset_right = 42.0
+offset_bottom = 42.0
+mouse_filter = 2
 color = Color(0.28, 0.53, 0.33, 1)
-polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
 
 [node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree8" unique_id=1001000041]
 offset_left = -8.0
@@ -306,9 +338,13 @@ shape = SubResource("RectangleShape2D_tree")
 [node name="Tree9" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000043]
 position = Vector2(1900, 2080)
 
-[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree9" unique_id=1001000044]
+[node name="Canopy" type="ColorRect" parent="Wild/Trees/Tree9" unique_id=1001000044]
+offset_left = -42.0
+offset_top = -42.0
+offset_right = 42.0
+offset_bottom = 42.0
+mouse_filter = 2
 color = Color(0.28, 0.53, 0.33, 1)
-polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
 
 [node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree9" unique_id=1001000045]
 offset_left = -8.0
@@ -324,9 +360,13 @@ shape = SubResource("RectangleShape2D_tree")
 [node name="Tree10" type="StaticBody2D" parent="Wild/Trees" unique_id=1001000047]
 position = Vector2(2760, 2140)
 
-[node name="Canopy" type="Polygon2D" parent="Wild/Trees/Tree10" unique_id=1001000048]
+[node name="Canopy" type="ColorRect" parent="Wild/Trees/Tree10" unique_id=1001000048]
+offset_left = -42.0
+offset_top = -42.0
+offset_right = 42.0
+offset_bottom = 42.0
+mouse_filter = 2
 color = Color(0.28, 0.53, 0.33, 1)
-polygon = PackedVector2Array(42, 0, 30, 30, 0, 42, -30, 30, -42, 0, -30, -30, 0, -42, 30, -30)
 
 [node name="Trunk" type="ColorRect" parent="Wild/Trees/Tree10" unique_id=1001000049]
 offset_left = -8.0
@@ -344,9 +384,13 @@ shape = SubResource("RectangleShape2D_tree")
 [node name="Rock1" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000061]
 position = Vector2(600, 1600)
 
-[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock1" unique_id=1001000062]
+[node name="Stone" type="ColorRect" parent="Wild/Rocks/Rock1" unique_id=1001000062]
+offset_left = -34.0
+offset_top = -20.0
+offset_right = 36.0
+offset_bottom = 18.0
+mouse_filter = 2
 color = Color(0.62, 0.64, 0.68, 1)
-polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
 
 [node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock1" unique_id=1001000063]
 shape = SubResource("RectangleShape2D_rock")
@@ -354,9 +398,13 @@ shape = SubResource("RectangleShape2D_rock")
 [node name="Rock2" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000064]
 position = Vector2(1080, 1880)
 
-[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock2" unique_id=1001000065]
+[node name="Stone" type="ColorRect" parent="Wild/Rocks/Rock2" unique_id=1001000065]
+offset_left = -34.0
+offset_top = -20.0
+offset_right = 36.0
+offset_bottom = 18.0
+mouse_filter = 2
 color = Color(0.62, 0.64, 0.68, 1)
-polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
 
 [node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock2" unique_id=1001000066]
 shape = SubResource("RectangleShape2D_rock")
@@ -364,9 +412,13 @@ shape = SubResource("RectangleShape2D_rock")
 [node name="Rock3" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000067]
 position = Vector2(2280, 1250)
 
-[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock3" unique_id=1001000068]
+[node name="Stone" type="ColorRect" parent="Wild/Rocks/Rock3" unique_id=1001000068]
+offset_left = -34.0
+offset_top = -20.0
+offset_right = 36.0
+offset_bottom = 18.0
+mouse_filter = 2
 color = Color(0.62, 0.64, 0.68, 1)
-polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
 
 [node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock3" unique_id=1001000069]
 shape = SubResource("RectangleShape2D_rock")
@@ -374,9 +426,13 @@ shape = SubResource("RectangleShape2D_rock")
 [node name="Rock4" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000070]
 position = Vector2(2880, 1600)
 
-[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock4" unique_id=1001000071]
+[node name="Stone" type="ColorRect" parent="Wild/Rocks/Rock4" unique_id=1001000071]
+offset_left = -34.0
+offset_top = -20.0
+offset_right = 36.0
+offset_bottom = 18.0
+mouse_filter = 2
 color = Color(0.62, 0.64, 0.68, 1)
-polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
 
 [node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock4" unique_id=1001000072]
 shape = SubResource("RectangleShape2D_rock")
@@ -384,9 +440,13 @@ shape = SubResource("RectangleShape2D_rock")
 [node name="Rock5" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000073]
 position = Vector2(3340, 1500)
 
-[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock5" unique_id=1001000074]
+[node name="Stone" type="ColorRect" parent="Wild/Rocks/Rock5" unique_id=1001000074]
+offset_left = -34.0
+offset_top = -20.0
+offset_right = 36.0
+offset_bottom = 18.0
+mouse_filter = 2
 color = Color(0.62, 0.64, 0.68, 1)
-polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
 
 [node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock5" unique_id=1001000075]
 shape = SubResource("RectangleShape2D_rock")
@@ -394,9 +454,13 @@ shape = SubResource("RectangleShape2D_rock")
 [node name="Rock6" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000076]
 position = Vector2(1300, 2140)
 
-[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock6" unique_id=1001000077]
+[node name="Stone" type="ColorRect" parent="Wild/Rocks/Rock6" unique_id=1001000077]
+offset_left = -34.0
+offset_top = -20.0
+offset_right = 36.0
+offset_bottom = 18.0
+mouse_filter = 2
 color = Color(0.62, 0.64, 0.68, 1)
-polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
 
 [node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock6" unique_id=1001000078]
 shape = SubResource("RectangleShape2D_rock")
@@ -404,9 +468,13 @@ shape = SubResource("RectangleShape2D_rock")
 [node name="Rock7" type="StaticBody2D" parent="Wild/Rocks" unique_id=1001000079]
 position = Vector2(2380, 1940)
 
-[node name="Stone" type="Polygon2D" parent="Wild/Rocks/Rock7" unique_id=1001000080]
+[node name="Stone" type="ColorRect" parent="Wild/Rocks/Rock7" unique_id=1001000080]
+offset_left = -34.0
+offset_top = -20.0
+offset_right = 36.0
+offset_bottom = 18.0
+mouse_filter = 2
 color = Color(0.62, 0.64, 0.68, 1)
-polygon = PackedVector2Array(36, -6, 20, -18, -16, -20, -34, -4, -22, 16, 16, 18)
 
 [node name="Collision" type="CollisionShape2D" parent="Wild/Rocks/Rock7" unique_id=1001000081]
 shape = SubResource("RectangleShape2D_rock")
@@ -536,11 +604,6 @@ offset_bottom = 110.0
 mouse_filter = 2
 color = Color(0.99, 0.95, 0.86, 1)
 
-[node name="Roof" type="Polygon2D" parent="Objects/HouseStella" unique_id=675177389]
-position = Vector2(0, -110)
-color = Color(0.85, 0.45, 0.36, 1)
-polygon = PackedVector2Array(-160, 0, 160, 0, 0, -130)
-
 [node name="Door" type="ColorRect" parent="Objects/HouseStella" unique_id=1382546663]
 offset_left = -28.0
 offset_top = 40.0
@@ -570,11 +633,6 @@ offset_right = 140.0
 offset_bottom = 120.0
 mouse_filter = 2
 color = Color(0.99, 0.9, 0.78, 1)
-
-[node name="Roof" type="Polygon2D" parent="Objects/HouseBram" unique_id=582546228]
-position = Vector2(0, -120)
-color = Color(0.55, 0.45, 0.8, 1)
-polygon = PackedVector2Array(-180, 0, 180, 0, 0, -140)
 
 [node name="Door" type="ColorRect" parent="Objects/HouseBram" unique_id=1595525289]
 offset_left = -30.0
@@ -606,11 +664,6 @@ offset_bottom = 90.0
 mouse_filter = 2
 color = Color(0.97, 0.86, 0.72, 1)
 
-[node name="Roof" type="Polygon2D" parent="Objects/HutMilo" unique_id=1102402414]
-position = Vector2(0, -90)
-color = Color(0.42, 0.66, 0.5, 1)
-polygon = PackedVector2Array(-140, 0, 140, 0, 0, -110)
-
 [node name="Door" type="ColorRect" parent="Objects/HutMilo" unique_id=1658723442]
 offset_left = -24.0
 offset_top = 28.0
@@ -632,11 +685,6 @@ offset_right = 100.0
 offset_bottom = 90.0
 mouse_filter = 2
 color = Color(0.95, 0.92, 0.8, 1)
-
-[node name="Roof" type="Polygon2D" parent="Objects/HutTuck" unique_id=395389070]
-position = Vector2(0, -90)
-color = Color(0.9, 0.62, 0.3, 1)
-polygon = PackedVector2Array(-130, 0, 130, 0, 0, -100)
 
 [node name="Door" type="ColorRect" parent="Objects/HutTuck" unique_id=1446372498]
 offset_left = -22.0
