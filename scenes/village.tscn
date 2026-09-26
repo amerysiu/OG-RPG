@@ -6,6 +6,16 @@
 [ext_resource type="PackedScene" path="res://scenes/word_puzzle.tscn" id="4_puzzle"]
 [ext_resource type="PackedScene" uid="uid://c0h8c45etk7t5" path="res://scenes/minigame_word_build.tscn" id="5_build"]
 [ext_resource type="PackedScene" uid="uid://mwprni3jwjis" path="res://scenes/monster.tscn" id="6_monster"]
+[ext_resource type="Texture2D" uid="uid://bofrvshfd11jw" path="res://assets/2.5d_tiles/Tileset/Tileset.png" id="7_tiles"]
+[ext_resource type="TileSet" uid="uid://bxfge1qb6wu85" path="res://assets/2.5d_tiles/Tileset/og_terrain_tileset.tres" id="8_5m02y"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_grass"]
+atlas = ExtResource("7_tiles")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_path"]
+atlas = ExtResource("7_tiles")
+region = Rect2(0, 160, 16, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tree"]
 size = Vector2(60, 60)
@@ -59,35 +69,47 @@ height = 40.0
 [node name="Village" type="Node2D" unique_id=2001496072]
 script = ExtResource("1_village")
 
-[node name="WildGround" type="ColorRect" parent="." unique_id=1001000001]
+[node name="WildGround" type="TextureRect" parent="." unique_id=1001000001]
+self_modulate = Color(0.6, 0.76, 0.51, 1)
+texture_filter = 1
 offset_right = 3600.0
 offset_bottom = 2400.0
 mouse_filter = 2
-color = Color(0.6, 0.76, 0.51, 1)
+texture = SubResource("AtlasTexture_grass")
+stretch_mode = 1
 
-[node name="Ground" type="ColorRect" parent="." unique_id=1351978932]
+[node name="Ground" type="TextureRect" parent="." unique_id=1351978932]
+self_modulate = Color(0.72, 0.87, 0.62, 1)
+texture_filter = 1
 offset_right = 1800.0
 offset_bottom = 1200.0
 mouse_filter = 2
-color = Color(0.72, 0.87, 0.62, 1)
+texture = SubResource("AtlasTexture_grass")
+stretch_mode = 1
 
 [node name="Paths" type="Node2D" parent="." unique_id=1267343520]
 
-[node name="PathVertical" type="ColorRect" parent="Paths" unique_id=126602376]
+[node name="PathVertical" type="TextureRect" parent="Paths" unique_id=126602376]
+self_modulate = Color(0.87, 0.8, 0.63, 1)
+texture_filter = 1
 offset_left = 852.0
 offset_top = 340.0
 offset_right = 948.0
 offset_bottom = 940.0
 mouse_filter = 2
-color = Color(0.87, 0.8, 0.63, 1)
+texture = SubResource("AtlasTexture_path")
+stretch_mode = 1
 
-[node name="PathHorizontal" type="ColorRect" parent="Paths" unique_id=1754849146]
+[node name="PathHorizontal" type="TextureRect" parent="Paths" unique_id=1754849146]
+self_modulate = Color(0.87, 0.8, 0.63, 1)
+texture_filter = 1
 offset_left = 300.0
 offset_top = 606.0
 offset_right = 1500.0
 offset_bottom = 674.0
 mouse_filter = 2
-color = Color(0.87, 0.8, 0.63, 1)
+texture = SubResource("AtlasTexture_path")
+stretch_mode = 1
 
 [node name="Flowers" type="Node2D" parent="." unique_id=1878057758]
 
@@ -1019,3 +1041,6 @@ theme_override_colors/font_color = Color(0.33, 0.33, 0.45, 1)
 theme_override_font_sizes/font_size = 18
 text = "Walk with W A S D or the arrow keys."
 autowrap_mode = 2
+
+[node name="Water" type="TileMapLayer" parent="." unique_id=261973244]
+tile_set = ExtResource("8_5m02y")

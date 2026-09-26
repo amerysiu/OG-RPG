@@ -1,0 +1,32 @@
+[gd_resource type="TileSet" format=3 uid="uid://bxfge1qb6wu85"]
+
+[ext_resource type="Texture2D" uid="uid://bofrvshfd11jw" path="res://assets/2.5d_tiles/Tileset/Tileset.png" id="1_sheet"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_og_terrain"]
+texture = ExtResource("1_sheet")
+0:3/0 = 0
+0:3/0/custom_data_0 = "grassland"
+0:10/0 = 0
+0:10/0/custom_data_0 = "path"
+2:10/0 = 0
+2:10/0/custom_data_0 = "path"
+0:14/0 = 0
+0:14/0/custom_data_0 = "path"
+0:20/0 = 0
+0:20/0/custom_data_0 = "path"
+0:25/0 = 0
+0:25/0/custom_data_0 = "path"
+0:31/0 = 0
+0:31/0/custom_data_0 = "path"
+2:17/0 = 0
+2:17/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:17/0/custom_data_0 = "water"
+3:7/0 = 0
+3:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:7/0/custom_data_0 = "water"
+
+[resource]
+physics_layer_0/collision_layer = 1
+custom_data_layer_0/name = "terrain_class"
+custom_data_layer_0/type = 4
+sources/0 = SubResource("TileSetAtlasSource_og_terrain")
