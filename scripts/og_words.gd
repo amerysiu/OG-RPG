@@ -277,6 +277,24 @@ static func pick_word_for_zone(zone_id: int, monster_level: int, exclude: Array 
 	return filtered[randi() % filtered.size()]
 
 
+## Every distinct phoneme the bank teaches, mapped to one grapheme that spells
+## it. Only entries whose sounds and tiles line up one-to-one contribute, so a
+## phoneme always has a spelling the audio player can say. Used to build the
+## redundant (wrong) sound tiles in the phoneme-picking question.
+static func phoneme_bank() -> Dictionary:
+	var bank: Dictionary = {}
+	for entry in WORDS + ZONE1_WORDS + ZONE3_WORDS:
+		var sounds: Array = entry.get("sounds", [])
+		var tiles: Array = entry.get("tiles", [])
+		if sounds.size() != tiles.size():
+			continue
+		for i in sounds.size():
+			var sound := String(sounds[i])
+			if not bank.has(sound):
+				bank[sound] = String(tiles[i])
+	return bank
+
+
 static func is_vowel_grapheme(grapheme: String) -> bool:
 	var g := grapheme.to_lower()
 	return g in ["a", "e", "i", "o", "u", "ai", "ie", "me", "ve"]

@@ -4,12 +4,16 @@ extends Control
 ##
 ## A blown-up monster breathes at the top left, the three attack methods sit
 ## below it, and the Orton-Gillingham question is answered on the right. The
-## player - never the monster - chooses the attack, and the attack decides the
-## question:
+## player - never the monster - chooses the attack, and the attack decides
+## which question is asked:
 ##
-##   Light Hit  (sword) - build the word from its sounds, 1 hit
-##   Heavy Hit  (sword) - build a harder word, 2 hits
-##   Wand Magic (wand)  - listen only, then tap the sounds in order, 1 hit
+##   Light Hit  (sword) - the word is given; click its sounds in order, 1 hit
+##   Heavy Hit  (sword) - build a harder word from its letters, 2 hits
+##   Wand Magic (wand)  - hear the word only, then click its sounds, 1 hit
+##
+## Harder questions carry more redundant sounds (or letters) that do not belong
+## in the word. Every click plays the sound it stands for. Backspace, or tapping
+## a chosen tile again, takes it back.
 ##
 ## Three wrong tries end the attack as a miss. This screen reports facts only;
 ## the world decides what a hit or a miss costs.
@@ -26,6 +30,11 @@ const MAX_TRIES := 3
 ## Gap between phonemes when the word prompt is played.
 const PICK_SECONDS := 0.55
 
+## Which question the player is answering.
+##   BUILD   - tap grapheme (or syllable) tiles to spell the word.
+##   PHONEME - the word is given; click the sounds that make it.
+enum QMode { BUILD, PHONEME }
+
 var _active := false
 var _locked := true
 var _defeated := false
@@ -37,6 +46,7 @@ var _hits_total := 1
 var _monster_name := "Monster"
 
 var _entry: Dictionary = {}
+var _mode: int = QMode.BUILD
 var _tiles: Array = []
 var _placed: Array = []
 var _slot_buttons: Array = []
@@ -45,6 +55,12 @@ var _distractors := 4
 var _audio_only := false
 var _typed := ""
 var _exclude: Array = []
+
+## Phoneme-pick state: the correct sound sequence, the clickable tiles (each a
+## {"sound", "grapheme", "node"} dictionary) and the tiles chosen so far.
+var _phoneme_sounds: Array = []
+var _phoneme_tiles: Array = []
+var _picked: Array = []
 
 var _audio: AudioStreamPlayer
 var _idle_tween: Tween
@@ -110,6 +126,9 @@ func begin_round(note: String) -> void:
 	_entry = {}
 	_tiles = []
 	_placed = []
+	_picked = []
+	_phoneme_tiles = []
+	_phoneme_sounds = []
 	_typed = ""
 	_tries = 0
 	_clear_question()
@@ -159,17 +178,27 @@ func _on_attack(method: String) -> void:
 	attack_chosen.emit(method)
 	match method:
 		"heavy":
+			# Hardest: spell the word yourself, one step above the monster.
+			_mode = QMode.BUILD
 			_audio_only = false
 			_distractors = 6
 			_entry = _pick_word(_level + 1)
 		"magic":
+			# Sound only: no letters on screen, just what you hear.
+			_mode = QMode.PHONEME
 			_audio_only = true
-			_distractors = 4
+			_distractors = 3
 			_entry = _pick_word(_level)
 		_:
+			# Easiest: the word is on screen; click the sounds that make it.
+			_mode = QMode.PHONEME
 			_audio_only = false
-			_distractors = 4
+			_distractors = 2
 			_entry = _pick_word(_level)
+	# A word whose sounds and letters do not line up one-to-one (a two-syllable
+	# word) cannot be answered sound by sound, so fall back to spelling it.
+	if _mode == QMode.PHONEME and _entry.get("sounds", []).size() != _entry.get("tiles", []).size():
+		_mode = QMode.BUILD
 	_load_question()
 
 
@@ -187,26 +216,44 @@ func _pick_word(max_level: int) -> Dictionary:
 func _load_question() -> void:
 	_tiles = _entry.get("tiles", [])
 	_placed.clear()
+	_picked.clear()
 	_slot_buttons.clear()
+	_phoneme_tiles.clear()
 	_typed = ""
 	_tries = 0
 	_clear_question()
-	if _audio_only:
-		_prompt.text = "Listen, then tap the matching sounds in order."
+	if _mode == QMode.PHONEME:
+		_phoneme_sounds = _entry.get("sounds", [])
+		if _audio_only:
+			_prompt.text = "Listen, then click the sounds you hear."
+		else:
+			_prompt.text = "Which sounds make %s?" % String(_entry.get("word", "")).to_upper()
+		_rebuild_slots(_phoneme_sounds)
+		_slot_row.show()
+		_rebuild_phoneme_tiles()
+		_tile_pool.show()
 	else:
-		_prompt.text = "Build the word: tap each sound in order."
-		_rebuild_chips()
-		_sound_row.show()
-	_rebuild_slots()
-	_slot_row.show()
-	_rebuild_tiles()
-	_tile_pool.show()
+		_phoneme_sounds = []
+		if _audio_only:
+			_prompt.text = "Listen, then tap the matching sounds in order."
+		else:
+			_prompt.text = "Build the word: tap each sound in order."
+			_rebuild_chips()
+			_sound_row.show()
+		_rebuild_slots(_tiles)
+		_slot_row.show()
+		_rebuild_tiles()
+		_tile_pool.show()
 	_hear.show()
 	_back.show()
-	_message.text = "A correct answer is a hit. %d wrong tries and the attack misses." % MAX_TRIES
+	_message.text = "Every click plays its sound. %d wrong tries and the attack misses." % MAX_TRIES
+	# The question is ready, so unlock answering. _on_attack locked the screen
+	# while it picked the word; without this the tiles and keys stay dead.
+	_locked = false
 	_play_word()
 
 
+## The scaffold row of the target sounds. Hidden when the sounds ARE the answer.
 func _rebuild_chips() -> void:
 	for child in _sound_row.get_children():
 		child.queue_free()
@@ -220,10 +267,11 @@ func _rebuild_chips() -> void:
 		_sound_row.add_child(chip)
 
 
-func _rebuild_slots() -> void:
+## One empty slot per unit the player must supply (letters, or sounds).
+func _rebuild_slots(fills: Array) -> void:
 	for child in _slot_row.get_children():
 		child.queue_free()
-	for i in _tiles.size():
+	for i in fills.size():
 		var slot := Button.new()
 		slot.custom_minimum_size = Vector2(64, 64)
 		slot.focus_mode = Control.FOCUS_NONE
@@ -242,11 +290,45 @@ func _rebuild_tiles() -> void:
 		_tile_pool.add_child(btn)
 
 
+## The sound tiles: the sounds of the word, plus redundant sounds that belong to
+## other words. Tapping one says it, and the chosen tile stays tappable so it
+## can be taken back.
+func _rebuild_phoneme_tiles() -> void:
+	for child in _tile_pool.get_children():
+		child.queue_free()
+	var sounds: Array = _entry.get("sounds", [])
+	var tiles: Array = _entry.get("tiles", [])
+	var entries: Array = []
+	for i in sounds.size():
+		entries.append({"sound": String(sounds[i]), "grapheme": String(tiles[i])})
+	var bank: Dictionary = OGWords.phoneme_bank()
+	var extras: Array = []
+	for key in bank.keys():
+		if not sounds.has(key):
+			extras.append({"sound": String(key), "grapheme": String(bank[key])})
+	extras.shuffle()
+	var added := 0
+	for extra in extras:
+		if added >= _distractors:
+			break
+		entries.append(extra)
+		added += 1
+	entries.shuffle()
+	for item in entries:
+		var btn := CombatUI.grapheme_button(String(item["sound"]), Vector2(84, 64))
+		btn.add_theme_font_size_override("font_size", 20)
+		btn.pressed.connect(_on_phoneme.bind(item, btn))
+		_tile_pool.add_child(btn)
+		_phoneme_tiles.append({"sound": String(item["sound"]), "grapheme": String(item["grapheme"]), "node": btn})
+
+
 func _clear_question() -> void:
 	for row in [_sound_row, _slot_row, _tile_pool]:
 		for child in row.get_children():
 			child.queue_free()
 	_slot_buttons.clear()
+	_picked.clear()
+	_phoneme_tiles.clear()
 	_sound_row.hide()
 	_slot_row.hide()
 	_tile_pool.hide()
@@ -254,7 +336,7 @@ func _clear_question() -> void:
 	_back.hide()
 
 
-# ----------------------------------------------------------------- answering
+# ------------------------------- answering: build the word from its letters
 
 func _on_tile(g: String, btn: Button) -> void:
 	if not _active or _locked or _entry.is_empty():
@@ -308,16 +390,71 @@ func _accept(g: String, btn: Button) -> void:
 		_resolve_hit()
 
 
+# ------------------------------ answering: click the sounds that make a word
+
+func _on_phoneme(item: Dictionary, btn: Button) -> void:
+	if not _active or _locked or _entry.is_empty():
+		return
+	# Tapping a tile already chosen takes it back - and any pick after it.
+	var chosen := _picked_index(btn)
+	if chosen != -1:
+		_undo_to(chosen)
+		return
+	if _picked.size() >= _phoneme_sounds.size():
+		return
+	_play_tile(String(item["grapheme"]))
+	var expected := String(_phoneme_sounds[_picked.size()])
+	if String(item["sound"]) != expected:
+		_reject(String(item["sound"]), expected)
+		return
+	_picked.append(item)
+	btn.modulate = Color(0.55, 0.92, 0.62)
+	var slot: Button = _slot_buttons[_picked.size() - 1]
+	slot.text = String(item["sound"])
+	slot.add_theme_font_size_override("font_size", 20)
+	_message.text = "Yes - %s" % String(item["sound"])
+	if _picked.size() >= _phoneme_sounds.size():
+		_resolve_hit()
+
+
+func _picked_index(btn: Button) -> int:
+	for i in _picked.size():
+		if _picked[i].get("node", null) == btn:
+			return i
+	return -1
+
+
+## Take back the pick at `index` and everything chosen after it.
+func _undo_to(index: int) -> void:
+	if index < 0 or index >= _picked.size():
+		return
+	for i in range(_picked.size() - 1, index - 1, -1):
+		var node = _picked[i].get("node", null)
+		if node != null and is_instance_valid(node):
+			node.modulate = Color.WHITE
+		if i < _slot_buttons.size():
+			var slot: Button = _slot_buttons[i]
+			slot.text = ""
+			slot.remove_theme_color_override("font_color")
+		_picked.remove_at(i)
+	_message.text = "Take another sound."
+
+
 func _reject(attempt: String, expected: String) -> void:
 	_tries += 1
 	_message.text = "That was %s. Try %s next." % [attempt, expected]
-	_play_tile(expected)
 	if _tries >= MAX_TRIES:
 		_resolve_miss()
 
 
+## The "Take back" button, and Backspace, share this.
 func _take_back() -> void:
-	if _placed.is_empty() or _locked:
+	if _locked:
+		return
+	if _mode == QMode.PHONEME:
+		_undo_to(_picked.size() - 1)
+		return
+	if _placed.is_empty():
 		return
 	_placed.pop_back()
 	var slot: Button = _slot_buttons[_placed.size()]
@@ -403,6 +540,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if _locked or _entry.is_empty():
 		return
 	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_BACKSPACE:
+			_take_back()
+			get_viewport().set_input_as_handled()
+			return
+		if _mode != QMode.BUILD:
+			return
 		var letter := String.chr(event.unicode).to_lower()
 		if letter.length() == 1 and letter >= "a" and letter <= "z":
 			_on_typed_letter(letter)

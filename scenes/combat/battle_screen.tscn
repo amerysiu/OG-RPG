@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://cq51xjhqq60ge"]
 
-[ext_resource type="Script" path="res://scripts/combat/battle_screen.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://cfky6svspf4s2" path="res://scripts/combat/battle_screen.gd" id="1_script"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_qpanel"]
 bg_color = Color(0.09, 0.08, 0.18, 1)
@@ -9,7 +9,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="BattleScreen" type="Control"]
+[node name="BattleScreen" type="Control" unique_id=932158051]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,7 +18,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Dim" type="ColorRect" parent="."]
+[node name="Dim" type="ColorRect" parent="." unique_id=1441823318]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,7 +28,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.04, 0.04, 0.1, 0.84)
 
-[node name="Frame" type="ColorRect" parent="."]
+[node name="Frame" type="ColorRect" parent="." unique_id=488881519]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -42,7 +42,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.12, 0.11, 0.24, 0.98)
 
-[node name="Margin" type="MarginContainer" parent="Frame"]
+[node name="Margin" type="MarginContainer" parent="Frame" unique_id=2102540346]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -54,21 +54,21 @@ theme_override_constants/margin_top = 14
 theme_override_constants/margin_right = 18
 theme_override_constants/margin_bottom = 14
 
-[node name="Split" type="HBoxContainer" parent="Frame/Margin"]
+[node name="Split" type="HBoxContainer" parent="Frame/Margin" unique_id=707902140]
 layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="Left" type="VBoxContainer" parent="Frame/Margin/Split"]
+[node name="Left" type="VBoxContainer" parent="Frame/Margin/Split" unique_id=1742285599]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="MonsterBox" type="Control" parent="Frame/Margin/Split/Left"]
+[node name="MonsterBox" type="Control" parent="Frame/Margin/Split/Left" unique_id=1231239793]
 custom_minimum_size = Vector2(0, 190)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MonsterSprite" type="TextureRect" parent="Frame/Margin/Split/Left/MonsterBox"]
+[node name="MonsterSprite" type="TextureRect" parent="Frame/Margin/Split/Left/MonsterBox" unique_id=1027237452]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -80,7 +80,7 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="MonsterName" type="Label" parent="Frame/Margin/Split/Left"]
+[node name="MonsterName" type="Label" parent="Frame/Margin/Split/Left" unique_id=563553275]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.98, 0.94, 1, 1)
@@ -88,7 +88,7 @@ theme_override_font_sizes/font_size = 26
 text = "Monster"
 horizontal_alignment = 1
 
-[node name="HpBar" type="ProgressBar" parent="Frame/Margin/Split/Left"]
+[node name="HpBar" type="ProgressBar" parent="Frame/Margin/Split/Left" unique_id=1252851179]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
@@ -96,7 +96,7 @@ max_value = 2.0
 value = 2.0
 show_percentage = false
 
-[node name="HpLabel" type="Label" parent="Frame/Margin/Split/Left"]
+[node name="HpLabel" type="Label" parent="Frame/Margin/Split/Left" unique_id=1053551532]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.9, 1, 1)
@@ -104,7 +104,7 @@ theme_override_font_sizes/font_size = 16
 text = "HP  2 / 2"
 horizontal_alignment = 1
 
-[node name="AttackPrompt" type="Label" parent="Frame/Margin/Split/Left"]
+[node name="AttackPrompt" type="Label" parent="Frame/Margin/Split/Left" unique_id=1832015844]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.82, 0.4, 1)
@@ -112,12 +112,12 @@ theme_override_font_sizes/font_size = 18
 text = "Choose your attack"
 horizontal_alignment = 1
 
-[node name="AttackRow" type="HBoxContainer" parent="Frame/Margin/Split/Left"]
+[node name="AttackRow" type="HBoxContainer" parent="Frame/Margin/Split/Left" unique_id=1882726327]
 layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="LightButton" type="Button" parent="Frame/Margin/Split/Left/AttackRow"]
+[node name="LightButton" type="Button" parent="Frame/Margin/Split/Left/AttackRow" unique_id=131952535]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 50)
 layout_mode = 2
@@ -126,7 +126,7 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 18
 text = "Light Hit"
 
-[node name="HeavyButton" type="Button" parent="Frame/Margin/Split/Left/AttackRow"]
+[node name="HeavyButton" type="Button" parent="Frame/Margin/Split/Left/AttackRow" unique_id=1175731179]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 50)
 layout_mode = 2
@@ -135,7 +135,7 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 18
 text = "Heavy Hit"
 
-[node name="MagicButton" type="Button" parent="Frame/Margin/Split/Left/AttackRow"]
+[node name="MagicButton" type="Button" parent="Frame/Margin/Split/Left/AttackRow" unique_id=394622908]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(140, 50)
 layout_mode = 2
@@ -144,7 +144,7 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 18
 text = "Wand Magic"
 
-[node name="FleeButton" type="Button" parent="Frame/Margin/Split/Left"]
+[node name="FleeButton" type="Button" parent="Frame/Margin/Split/Left" unique_id=1177508997]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 38)
 layout_mode = 2
@@ -152,17 +152,17 @@ size_flags_horizontal = 4
 focus_mode = 0
 text = "Run away (Esc)"
 
-[node name="QuestionPanel" type="PanelContainer" parent="Frame/Margin/Split"]
+[node name="QuestionPanel" type="PanelContainer" parent="Frame/Margin/Split" unique_id=781321731]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.35
 theme_override_styles/panel = SubResource("StyleBox_qpanel")
 
-[node name="QBox" type="VBoxContainer" parent="Frame/Margin/Split/QuestionPanel"]
+[node name="QBox" type="VBoxContainer" parent="Frame/Margin/Split/QuestionPanel" unique_id=100087622]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Prompt" type="Label" parent="Frame/Margin/Split/QuestionPanel/QBox"]
+[node name="Prompt" type="Label" parent="Frame/Margin/Split/QuestionPanel/QBox" unique_id=278217841]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
@@ -173,21 +173,21 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="SoundRow" type="HBoxContainer" parent="Frame/Margin/Split/QuestionPanel/QBox"]
+[node name="SoundRow" type="HBoxContainer" parent="Frame/Margin/Split/QuestionPanel/QBox" unique_id=228047693]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="SlotRow" type="HBoxContainer" parent="Frame/Margin/Split/QuestionPanel/QBox"]
+[node name="SlotRow" type="HBoxContainer" parent="Frame/Margin/Split/QuestionPanel/QBox" unique_id=952198866]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="TilePool" type="HFlowContainer" parent="Frame/Margin/Split/QuestionPanel/QBox"]
+[node name="TilePool" type="HFlowContainer" parent="Frame/Margin/Split/QuestionPanel/QBox" unique_id=1213871880]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
@@ -196,7 +196,7 @@ theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 alignment = 1
 
-[node name="Message" type="Label" parent="Frame/Margin/Split/QuestionPanel/QBox"]
+[node name="Message" type="Label" parent="Frame/Margin/Split/QuestionPanel/QBox" unique_id=318262850]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 46)
 layout_mode = 2
@@ -206,19 +206,19 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="ButtonRow" type="HBoxContainer" parent="Frame/Margin/Split/QuestionPanel/QBox"]
+[node name="ButtonRow" type="HBoxContainer" parent="Frame/Margin/Split/QuestionPanel/QBox" unique_id=410164306]
 layout_mode = 2
 theme_override_constants/separation = 14
 alignment = 1
 
-[node name="HearButton" type="Button" parent="Frame/Margin/Split/QuestionPanel/QBox/ButtonRow"]
+[node name="HearButton" type="Button" parent="Frame/Margin/Split/QuestionPanel/QBox/ButtonRow" unique_id=586780358]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 40)
 layout_mode = 2
 focus_mode = 0
 text = "Hear again"
 
-[node name="BackButton" type="Button" parent="Frame/Margin/Split/QuestionPanel/QBox/ButtonRow"]
+[node name="BackButton" type="Button" parent="Frame/Margin/Split/QuestionPanel/QBox/ButtonRow" unique_id=980632315]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 40)
 layout_mode = 2
