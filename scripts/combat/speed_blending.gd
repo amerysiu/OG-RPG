@@ -3,8 +3,9 @@ extends Control
 ## Speed Blending - the "Light Hit" word game.
 ##
 ## The player reads the grapheme tiles and taps them in the order of the sounds
-## of the target word. This overlay reports facts only: the world decides what a
-## hit or a miss does.
+## of the target word. Tiles can also be typed on the keyboard: because a digraph
+## is ONE sound and ONE tile, "sh" is typed as s then h. This overlay reports
+## facts only: the world decides what a hit or a miss does.
 ##
 ##   word_solved(word) - the whole word was built correctly
 ##   attack_missed     - every try was used up, so the attack missed
@@ -21,6 +22,7 @@ var _entry: Dictionary = {}
 var _tiles: Array = []
 var _index := 0
 var _tries := 0
+var _typed := ""
 var _stream := 1.0
 var _flyers: Array = []
 var _audio: AudioStreamPlayer
@@ -62,13 +64,14 @@ func start_encounter(monster_name: String, entry: Dictionary, hits_left: int) ->
 	_tiles = entry.get("tiles", [])
 	_index = 0
 	_tries = 0
+	_typed = ""
 	_stream = 1.0
 	_active = true
 	show()
 	set_process(true)
 	_title.text = "Light Hit  ·  %s" % monster_name
 	_hint.text = "%s   Hits left: %d" % [String(entry.get("hint", "")), hits_left]
-	_message.text = "Tap the sounds in order. A wrong tap costs one of %d tries; run out and the hit misses." % MAX_TRIES
+	_message.text = "Tap or type the sounds in order (type s then h for sh). One wrong try costs one of %d." % MAX_TRIES
 	_rebuild_flyers()
 	_play_current()
 
@@ -93,8 +96,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		var typed := String.chr(event.unicode).to_lower()
-		if typed.length() == 1:
-			_try_grapheme(typed)
+		if typed.length() == 1 and typed >= "a" and typed <= "z":
+			_on_typed_letter(typed)
 			get_viewport().set_input_as_handled()
 
 
@@ -104,7 +107,7 @@ func _rebuild_flyers() -> void:
 		var g := String(_tiles[i])
 		var btn := CombatUI.grapheme_button(g, Vector2(72, 72))
 		btn.position = Vector2(40 + i * 110, 18)
-		btn.pressed.connect(_try_grapheme.bind(g))
+		btn.pressed.connect(_on_tile_pressed.bind(g))
 		_lane.add_child(btn)
 		_flyers.append(btn)
 
@@ -116,28 +119,63 @@ func _clear_flyers() -> void:
 	_flyers.clear()
 
 
+## A whole grapheme tile was tapped. Any half-typed letters are dropped first.
+func _on_tile_pressed(g: String) -> void:
+	_typed = ""
+	if _active:
+		_try_grapheme(g)
+
+
+## One letter was typed. Letters build up, so a two-letter grapheme such as sh,
+## ch or th can be typed as two keys even though it is one sound and one tile.
+func _on_typed_letter(letter: String) -> void:
+	if _index >= _tiles.size():
+		return
+	var expected := String(_tiles[_index]).to_lower()
+	_typed += letter
+	if expected.begins_with(_typed):
+		if _typed == expected:
+			_typed = ""
+			_accept(expected)
+		else:
+			_message.text = "Keep going - %s ..." % _typed
+		return
+	var attempt := _typed
+	_typed = ""
+	_reject(attempt, expected)
+
+
+## A whole grapheme was matched in one go (a tile tap).
 func _try_grapheme(g: String) -> void:
 	if _index >= _tiles.size():
 		return
 	var expected := String(_tiles[_index]).to_lower()
 	if g.to_lower() != expected:
-		_tries += 1
-		_message.text = "That was %s. Try %s next." % [g, expected]
-		_play_tile(expected)
-		if _tries >= MAX_TRIES:
-			_message.text = "No tries left. The hit misses - choose an attack again."
-			_active = false
-			set_process(false)
-			attack_missed.emit()
+		_reject(g, expected)
 		return
+	_accept(expected)
+
+
+func _accept(expected: String) -> void:
 	_index += 1
-	_play_tile(g)
-	_message.text = "Yes - %s" % g
+	_play_tile(expected)
+	_message.text = "Yes - %s" % expected
 	if _index >= _tiles.size():
 		_message.text = "Blended %s! Hit!" % String(_entry.get("word", "")).to_upper()
 		_active = false
 		set_process(false)
 		word_solved.emit(String(_entry.get("word", "")))
+
+
+func _reject(attempt: String, expected: String) -> void:
+	_tries += 1
+	_message.text = "That was %s. Try %s next." % [attempt, expected]
+	_play_tile(expected)
+	if _tries >= MAX_TRIES:
+		_message.text = "No tries left. The hit misses - choose an attack again."
+		_active = false
+		set_process(false)
+		attack_missed.emit()
 
 
 func _play_current() -> void:
