@@ -3,10 +3,7 @@ extends Node2D
 const OGWords := preload("res://scripts/og_words.gd")
 const PlayerScene := preload("res://scenes/iso_player.tscn")
 const RemoteScene := preload("res://scenes/iso_remote_avatar.tscn")
-const SpeedScene := preload("res://scenes/combat/speed_blending.tscn")
-const AudioScene := preload("res://scenes/combat/audio_shielding.tscn")
-const ForgeScene := preload("res://scenes/combat/kinesthetic_forging.tscn")
-const PickerScene := preload("res://scenes/combat/attack_picker.tscn")
+const BattleScene := preload("res://scenes/combat/battle_screen.tscn")
 
 const CAMERA_FOLLOW := 6.0
 const RESOURCE_NAME := "Wood"
@@ -23,16 +20,10 @@ var _gold_label: Label
 var _resource_label: Label
 var _net_label: Label
 var _ip_edit: LineEdit
-var _speed: Control
-var _audio: Control
-var _forge: Control
-var _picker: Control
-var _active_overlay: Control
+var _battle: Control
 var _monster: Node
 var _hits_left := 0
 var _hits_total := 0
-var _pending_damage := 0
-var _pending_attack := ""
 var _busy := false
 var _gold := 0
 var _resource := 0
@@ -199,29 +190,16 @@ func _build_combat_layer() -> void:
 	layer.layer = 20
 	layer.name = "CombatLayer"
 	add_child(layer)
-	_speed = SpeedScene.instantiate()
-	_audio = AudioScene.instantiate()
-	_forge = ForgeScene.instantiate()
-	_picker = PickerScene.instantiate()
-	layer.add_child(_speed)
-	layer.add_child(_audio)
-	layer.add_child(_forge)
-	layer.add_child(_picker)
+	_battle = BattleScene.instantiate()
+	layer.add_child(_battle)
 
 
 func _wire_overlays() -> void:
-	# Light and Heavy sword hits both answer a word in Speed Blending; the wand
-	# answers in Audio Shielding. Kinesthetic Forging stays in the project for a
-	# future body-kinesthetic spell, but it is not on the attack menu yet.
-	for overlay in [_speed, _audio]:
-		overlay.word_solved.connect(_on_word_solved)
-		overlay.attack_missed.connect(_on_attack_missed)
-		overlay.flee_requested.connect(_on_flee)
-		overlay.hide()
-	_forge.hide()
-	_picker.attack_chosen.connect(_on_attack_chosen)
-	_picker.flee_requested.connect(_on_flee)
-	_picker.hide()
+	_battle.word_solved.connect(_on_word_solved)
+	_battle.attack_missed.connect(_on_attack_missed)
+	_battle.attack_chosen.connect(_on_attack_chosen)
+	_battle.flee_requested.connect(_on_flee)
+	_battle.hide()
 
 
 func _spawn_player() -> void:
@@ -247,86 +225,56 @@ func _on_monster_contacted(monster: Node) -> void:
 	_monster = monster
 	_hits_total = maxi(1, int(monster.call("starting_hits")))
 	_hits_left = _hits_total
-	_pending_damage = 0
-	_pending_attack = ""
 	_player.set_input_enabled(false)
 	monster.call("set_encounter_paused", true)
 	monster.call("set_hits_left", _hits_left)
-	_show_picker()
+	var mode := String(monster.call("combat_mode_key"))
+	var tex := CCAssetFetcher.monster_texture(mode, int(monster.get("sprite_index")))
 	RoomStateManager.set_combat("choose", String(monster.display_name))
-	_status.text = "%s blocks the path - choose your attack." % String(monster.display_name)
+	_battle.call("open_battle", String(monster.display_name), tex, int(monster.zone_id), int(monster.word_level), _hits_left, _hits_total)
+	_status.text = "%s blocks the path - choose an attack and answer its word." % String(monster.display_name)
 
 
-# ------------------------------------------------------------------- attacks
-
-## The player picked Light, Heavy or Magic in the attack menu. The choice picks
-## both the question and the payoff: Light is a quick word for one hit, Heavy is
-## a harder word for two, and Magic is the listen-and-shield question for one.
 func _on_attack_chosen(method: String) -> void:
-	if not _busy or _monster == null or not is_instance_valid(_monster):
+	if _monster == null or not is_instance_valid(_monster):
 		return
-	var level := int(_monster.word_level)
-	var zone := int(_monster.zone_id)
-	_picker.call("close_overlay")
-	_active_overlay = null
-	if method == "heavy":
-		_pending_attack = "heavy"
-		_pending_damage = 2
-		_launch_question(_speed, OGWords.pick_word_for_zone(zone, level + 2))
-	elif method == "magic":
-		_pending_attack = "magic"
-		_pending_damage = 1
-		_launch_question(_audio, OGWords.pick_word_for_zone(zone, level))
-	else:
-		_pending_attack = "light"
-		_pending_damage = 1
-		_launch_question(_speed, OGWords.pick_word_for_zone(zone, level))
-	RoomStateManager.set_combat(_pending_attack, String(_monster.display_name))
+	var labels := {"light": "Light Hit", "heavy": "Heavy Hit", "magic": "Wand Magic"}
+	var label := String(labels.get(method, method))
+	var monster_name := String(_monster.display_name)
+	_status.text = "%s: %s. Answer the word to land the hit." % [monster_name, label]
+	RoomStateManager.set_combat(method, monster_name)
 
 
-func _launch_question(overlay: Control, entry: Dictionary) -> void:
-	_active_overlay = overlay
-	overlay.call("start_encounter", String(_monster.display_name), entry, _hits_left)
-
-
-## A correct answer: the attack the player chose lands, for its own damage.
 func _on_word_solved(word: String) -> void:
 	if not _busy or _monster == null or not is_instance_valid(_monster):
 		return
-	var dmg := maxi(1, _pending_damage)
-	_hits_left = maxi(0, _hits_left - dmg)
+	_hits_left = maxi(0, _hits_left - 1)
 	_monster.call("set_hits_left", _hits_left)
 	if _hits_left > 0:
-		_status.text = "%s! %s takes %d hits - %d left. Choose your next attack." % [word.to_upper(), String(_monster.display_name), dmg, _hits_left]
-		_show_picker("That hit landed. Pick your next attack.")
+		_battle.call("set_hits_left", _hits_left)
+		_status.text = "%s! %s has %d hits left." % [word.to_upper(), String(_monster.display_name), _hits_left]
+		_battle.call("begin_round", "%s! %d hits left - pick another attack." % [word.to_upper(), _hits_left])
+		RoomStateManager.set_combat("choose", String(_monster.display_name))
 		return
 	var gold := maxi(1, _hits_total * 2)
 	var wood := maxi(1, _hits_total)
 	_gold += gold
 	_resource += wood
-	RoomStateManager.grant_party_xp(int(_monster.word_level))
+	RoomStateManager.grant_party_xp(int(_monster.get("word_level")))
 	_monster.call("mark_defeated")
 	_status.text = "%s is defeated! +%d gold, +%d wood." % [String(_monster.display_name), gold, wood]
+	_battle.call("show_defeat")
+	await get_tree().create_timer(0.9).timeout
 	_close_fight()
 
 
-## The tries ran out: the attack whiffs and the player picks again. A miss costs
-## no damage, it only ends that attack.
 func _on_attack_missed() -> void:
 	if not _busy or _monster == null or not is_instance_valid(_monster):
 		return
-	_status.text = "Your attack missed. %s is still standing - choose another attack." % String(_monster.display_name)
-	_show_picker("That attack missed. Nothing lost - try again.")
-
-
-## Show the attack menu again: at the start of a fight and between attacks.
-func _show_picker(note: String = "") -> void:
-	if _picker == null or _monster == null or not is_instance_valid(_monster):
-		return
-	if _active_overlay != null and _active_overlay != _picker:
-		_active_overlay.call("close_overlay")
-	_active_overlay = _picker
-	_picker.call("open", String(_monster.display_name), _hits_left, _hits_total, note)
+	var monster_name := String(_monster.display_name)
+	_status.text = "The attack missed - %s is still standing. Pick another attack." % monster_name
+	_battle.call("begin_round", "Miss! Pick another attack.")
+	RoomStateManager.set_combat("choose", monster_name)
 
 
 func _on_flee() -> void:
@@ -339,15 +287,12 @@ func _on_flee() -> void:
 
 
 func _close_fight() -> void:
-	if _active_overlay != null:
-		_active_overlay.call("close_overlay")
+	if _battle != null:
+		_battle.call("close_overlay")
 	if _player != null:
 		_player.set_input_enabled(true)
 	RoomStateManager.set_combat("none", "")
 	_monster = null
-	_active_overlay = null
-	_pending_damage = 0
-	_pending_attack = ""
 	_busy = false
 	_refresh_hud()
 
