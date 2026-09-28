@@ -168,9 +168,115 @@ static func tile_pool(entry: Dictionary, distractor_count: int = 4) -> Array:
 	return tiles
 
 
-## The correct answer for an entry, built from its tiles.
 static func answer(entry: Dictionary) -> String:
 	var joined := ""
 	for tile in entry.get("tiles", []):
 		joined += String(tile)
 	return joined
+
+
+const ZONE1_WORDS: Array = [
+	{"word": "a", "level": 1, "zone": 1, "pattern": "short vowel", "sounds": ["/a/"], "tiles": ["a"], "hint": "Short a, as in apple."},
+	{"word": "i", "level": 1, "zone": 1, "pattern": "short vowel", "sounds": ["/i/"], "tiles": ["i"], "hint": "Short i, as in igloo."},
+	{"word": "m", "level": 1, "zone": 1, "pattern": "continuous consonant", "sounds": ["/m/"], "tiles": ["m"], "hint": "Mmm, the humming sound."},
+	{"word": "s", "level": 1, "zone": 1, "pattern": "continuous consonant", "sounds": ["/s/"], "tiles": ["s"], "hint": "Sss, the snake sound."},
+	{"word": "t", "level": 1, "zone": 1, "pattern": "stop consonant", "sounds": ["/t/"], "tiles": ["t"], "hint": "The tapping t sound."},
+	{"word": "n", "level": 1, "zone": 1, "pattern": "continuous consonant", "sounds": ["/n/"], "tiles": ["n"], "hint": "Nnn, the nose sound."},
+	{"word": "p", "level": 1, "zone": 1, "pattern": "stop consonant", "sounds": ["/p/"], "tiles": ["p"], "hint": "The popping p sound."},
+	{"word": "at", "level": 2, "zone": 1, "pattern": "VC", "sounds": ["/a/", "/t/"], "tiles": ["a", "t"], "hint": "You are at a place."},
+	{"word": "am", "level": 2, "zone": 1, "pattern": "VC", "sounds": ["/a/", "/m/"], "tiles": ["a", "m"], "hint": "I am here."},
+	{"word": "it", "level": 2, "zone": 1, "pattern": "VC", "sounds": ["/i/", "/t/"], "tiles": ["i", "t"], "hint": "It is a thing."},
+	{"word": "in", "level": 2, "zone": 1, "pattern": "VC", "sounds": ["/i/", "/n/"], "tiles": ["i", "n"], "hint": "In the box."},
+	{"word": "sat", "level": 3, "zone": 1, "pattern": "CVC continuous", "sounds": ["/s/", "/a/", "/t/"], "tiles": ["s", "a", "t"], "hint": "Sat down on a mat."},
+	{"word": "mat", "level": 3, "zone": 1, "pattern": "CVC continuous", "sounds": ["/m/", "/a/", "/t/"], "tiles": ["m", "a", "t"], "hint": "A mat on the floor."},
+	{"word": "sam", "level": 3, "zone": 1, "pattern": "CVC continuous", "sounds": ["/s/", "/a/", "/m/"], "tiles": ["s", "a", "m"], "hint": "A boy's name."},
+	{"word": "man", "level": 3, "zone": 1, "pattern": "CVC continuous", "sounds": ["/m/", "/a/", "/n/"], "tiles": ["m", "a", "n"], "hint": "A grown-up person."},
+	{"word": "sit", "level": 4, "zone": 1, "pattern": "CVC continuous", "sounds": ["/s/", "/i/", "/t/"], "tiles": ["s", "i", "t"], "hint": "Sit in a chair."},
+	{"word": "sip", "level": 4, "zone": 1, "pattern": "CVC", "sounds": ["/s/", "/i/", "/p/"], "tiles": ["s", "i", "p"], "hint": "A tiny drink."},
+	{"word": "pin", "level": 4, "zone": 1, "pattern": "CVC", "sounds": ["/p/", "/i/", "/n/"], "tiles": ["p", "i", "n"], "hint": "A small sharp pin."},
+	{"word": "map", "level": 5, "zone": 1, "pattern": "CVC continuous", "sounds": ["/m/", "/a/", "/p/"], "tiles": ["m", "a", "p"], "hint": "A map shows the way."},
+	{"word": "tap", "level": 5, "zone": 1, "pattern": "CVC", "sounds": ["/t/", "/a/", "/p/"], "tiles": ["t", "a", "p"], "hint": "Tap with a finger."},
+	{"word": "nap", "level": 5, "zone": 1, "pattern": "CVC continuous", "sounds": ["/n/", "/a/", "/p/"], "tiles": ["n", "a", "p"], "hint": "A short sleep."},
+	{"word": "pan", "level": 5, "zone": 1, "pattern": "CVC continuous", "sounds": ["/p/", "/a/", "/n/"], "tiles": ["p", "a", "n"], "hint": "You cook in a pan."},
+]
+
+const ZONE3_WORDS: Array = [
+	{"word": "picnic", "level": 13, "zone": 3, "pattern": "two closed syllables", "sounds": ["/p/", "/i/", "/k/", "/n/", "/i/", "/k/"], "tiles": ["pic", "nic"], "hint": "A meal outside on a blanket.", "syllables": ["pic", "nic"]},
+	{"word": "rabbit", "level": 13, "zone": 3, "pattern": "two closed syllables", "sounds": ["/r/", "/a/", "/b/", "/i/", "/t/"], "tiles": ["rab", "bit"], "hint": "A hopping animal with long ears.", "syllables": ["rab", "bit"]},
+	{"word": "sunset", "level": 13, "zone": 3, "pattern": "two closed syllables", "sounds": ["/s/", "/u/", "/n/", "/s/", "/e/", "/t/"], "tiles": ["sun", "set"], "hint": "The sky when the sun goes down.", "syllables": ["sun", "set"]},
+	{"word": "napkin", "level": 14, "zone": 3, "pattern": "two closed syllables", "sounds": ["/n/", "/a/", "/p/", "/k/", "/i/", "/n/"], "tiles": ["nap", "kin"], "hint": "You wipe your mouth with it.", "syllables": ["nap", "kin"]},
+	{"word": "cabin", "level": 14, "zone": 3, "pattern": "two closed syllables", "sounds": ["/k/", "/a/", "/b/", "/i/", "/n/"], "tiles": ["cab", "in"], "hint": "A small house in the woods.", "syllables": ["cab", "in"]},
+	{"word": "magnet", "level": 14, "zone": 3, "pattern": "two closed syllables", "sounds": ["/m/", "/a/", "/g/", "/n/", "/e/", "/t/"], "tiles": ["mag", "net"], "hint": "It pulls metal toward it.", "syllables": ["mag", "net"]},
+	{"word": "replay", "level": 15, "zone": 3, "pattern": "prefix re-", "sounds": ["/r/", "/ē/", "/p/", "/l/", "/ā/"], "tiles": ["re", "play"], "hint": "Play it again.", "syllables": ["re", "play"]},
+	{"word": "unpack", "level": 15, "zone": 3, "pattern": "prefix un-", "sounds": ["/u/", "/n/", "/p/", "/a/", "/k/"], "tiles": ["un", "pack"], "hint": "Take things out of a bag.", "syllables": ["un", "pack"]},
+	{"word": "reread", "level": 15, "zone": 3, "pattern": "prefix re-", "sounds": ["/r/", "/ē/", "/r/", "/ē/", "/d/"], "tiles": ["re", "read"], "hint": "Read it one more time.", "syllables": ["re", "read"]},
+	{"word": "helpful", "level": 16, "zone": 3, "pattern": "suffix -ful", "sounds": ["/h/", "/e/", "/l/", "/p/", "/f/", "/u/", "/l/"], "tiles": ["help", "ful"], "hint": "Ready to help.", "syllables": ["help", "ful"]},
+	{"word": "sadness", "level": 16, "zone": 3, "pattern": "suffix -ness", "sounds": ["/s/", "/a/", "/d/", "/n/", "/e/", "/s/"], "tiles": ["sad", "ness"], "hint": "The feeling of being sad.", "syllables": ["sad", "ness"]},
+	{"word": "kindness", "level": 16, "zone": 3, "pattern": "suffix -ness", "sounds": ["/k/", "/ī/", "/n/", "/d/", "/n/", "/e/", "/s/"], "tiles": ["kind", "ness"], "hint": "Being kind to others.", "syllables": ["kind", "ness"]},
+	{"word": "said", "level": 17, "zone": 3, "pattern": "irregular", "sounds": ["/s/", "/e/", "/d/"], "tiles": ["s", "ai", "d"], "hint": "He said hello. Rule breaker: ai says /e/.", "syllables": ["said"]},
+	{"word": "was", "level": 17, "zone": 3, "pattern": "irregular", "sounds": ["/w/", "/u/", "/z/"], "tiles": ["w", "a", "s"], "hint": "It was sunny. Rule breaker: a says /u/.", "syllables": ["was"]},
+	{"word": "come", "level": 18, "zone": 3, "pattern": "irregular", "sounds": ["/k/", "/u/", "/m/"], "tiles": ["c", "o", "me"], "hint": "Come here. Rule breaker: o says /u/.", "syllables": ["come"]},
+	{"word": "have", "level": 18, "zone": 3, "pattern": "irregular", "sounds": ["/h/", "/a/", "/v/"], "tiles": ["h", "a", "ve"], "hint": "I have a book. Rule breaker: a is short.", "syllables": ["have"]},
+	{"word": "friend", "level": 19, "zone": 3, "pattern": "irregular", "sounds": ["/f/", "/r/", "/e/", "/n/", "/d/"], "tiles": ["fr", "ie", "nd"], "hint": "A person who cares for you. Rule breaker: ie says /e/.", "syllables": ["friend"]},
+	{"word": "because", "level": 19, "zone": 3, "pattern": "irregular two-syllable", "sounds": ["/b/", "/ē/", "/k/", "/u/", "/z/"], "tiles": ["be", "cause"], "hint": "Why something happens.", "syllables": ["be", "cause"]},
+]
+
+
+static func words_for_zone(zone_id: int) -> Array:
+	match zone_id:
+		1:
+			return ZONE1_WORDS.duplicate()
+		2:
+			return words_for_level(1) + words_for_level(2)
+		3:
+			return ZONE3_WORDS.duplicate()
+		_:
+			return WORDS.duplicate()
+
+
+## `max_level` optionally caps how hard the asked-for word may be (99 = no cap).
+## A Heavy Hit asks with a stepped-up `monster_level` instead, so each zone's own
+## tier rule decides what "one step harder" means.
+static func pick_word_for_zone(zone_id: int, monster_level: int, exclude: Array = [], max_level: int = 99) -> Dictionary:
+	var pool: Array = []
+	match zone_id:
+		1:
+			for entry in ZONE1_WORDS:
+				if int(entry.get("level", 1)) <= maxi(1, mini(5, monster_level)):
+					pool.append(entry)
+		2:
+			if monster_level >= 10:
+				pool = words_for_level(1) + words_for_level(2) + words_for_level(3)
+			elif monster_level >= 8:
+				pool = words_for_level(2)
+			else:
+				pool = words_for_level(1)
+		3:
+			for entry in ZONE3_WORDS:
+				if int(entry.get("level", 13)) <= maxi(13, monster_level):
+					pool.append(entry)
+			if pool.is_empty():
+				pool = ZONE3_WORDS.duplicate()
+		_:
+			pool = WORDS.duplicate()
+	if pool.is_empty():
+		pool = words_for_zone(zone_id)
+	if max_level < 99:
+		var capped: Array = []
+		for entry in pool:
+			if int(entry.get("level", 1)) <= max_level:
+				capped.append(entry)
+		if not capped.is_empty():
+			pool = capped
+	var filtered: Array = []
+	for entry in pool:
+		if not exclude.has(String(entry["word"])):
+			filtered.append(entry)
+	if filtered.is_empty():
+		filtered = pool
+	return filtered[randi() % filtered.size()]
+
+
+static func is_vowel_grapheme(grapheme: String) -> bool:
+	var g := grapheme.to_lower()
+	return g in ["a", "e", "i", "o", "u", "ai", "ie", "me", "ve"]

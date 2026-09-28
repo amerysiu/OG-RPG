@@ -6,3 +6,4 @@
 - Mini-games must be OG-grounded and multisensory in style (letter tiles, Elkonin sound boxes, word chains, syllable sorting, spelling-rule choice). Generic letter-guessing (hangman/Wordle clones) is not an acceptable primary mechanic.
 - Placeholder colored-shape art is scaffolding only. Real 2D art is its own milestone and is never treated as finished.
 - The village is the safe hub. The wild is where monsters and resources are.
+- Combat attack methods: the player picks the attack before each question. Light Hit (sword, quick word, 1 hit), Heavy Hit (sword, harder word, 2 hits), Wand Magic (listen-and-shield question, 1 hit). Three wrong tries make the attack a miss (no damage); the player then picks an attack again.
