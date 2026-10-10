@@ -231,7 +231,7 @@ func _on_monster_contacted(monster: Node) -> void:
 	var mode := String(monster.call("combat_mode_key"))
 	var tex := CCAssetFetcher.monster_texture(mode, int(monster.get("sprite_index")))
 	RoomStateManager.set_combat("choose", String(monster.display_name))
-	_battle.call("open_battle", String(monster.display_name), tex, int(monster.zone_id), int(monster.word_level), _hits_left, _hits_total)
+	_battle.call("open_battle", String(monster.display_name), tex, int(monster.zone_id), int(monster.word_level), _hits_left, _hits_total, mode)
 	_status.text = "%s blocks the path - choose an attack and answer its word." % String(monster.display_name)
 
 

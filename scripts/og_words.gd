@@ -319,3 +319,54 @@ static func phoneme_bank() -> Dictionary:
 static func is_vowel_grapheme(grapheme: String) -> bool:
 	var g := grapheme.to_lower()
 	return g in ["a", "e", "i", "o", "u", "ai", "ie", "me", "ve"]
+
+
+## True when the word ends in a /k/ sound spelled c, k or ck — the classic
+## Which Spelling? rule (duck, sock, lock, kit, cat...).
+static func is_which_spelling_k(entry: Dictionary) -> bool:
+	var tiles: Array = entry.get("tiles", [])
+	if tiles.is_empty():
+		return false
+	var last := String(tiles[tiles.size() - 1]).to_lower()
+	return last in ["c", "k", "ck"]
+
+
+## The correct final /k/ grapheme for a Which Spelling? question.
+static func which_spelling_k_answer(entry: Dictionary) -> String:
+	var tiles: Array = entry.get("tiles", [])
+	if tiles.is_empty():
+		return ""
+	return String(tiles[tiles.size() - 1]).to_lower()
+
+
+## A chain partner for `entry`: same level, exactly one tile different when
+## possible. Falls back to any other same-level word so the chain always runs.
+static func chain_partner(entry: Dictionary, exclude: Array = []) -> Dictionary:
+	var level := int(entry.get("level", 1))
+	var mine: Array = entry.get("tiles", [])
+	var all: Array = words_for_level(level)
+	if all.is_empty():
+		all = WORDS.duplicate()
+	var word := String(entry.get("word", ""))
+	var near: Array = []
+	var far: Array = []
+	for other in all:
+		var w := String(other.get("word", ""))
+		if w == word or exclude.has(w):
+			continue
+		var tiles: Array = other.get("tiles", [])
+		var diff := 0
+		var n := mini(mine.size(), tiles.size())
+		for i in n:
+			if String(mine[i]).to_lower() != String(tiles[i]).to_lower():
+				diff += 1
+		diff += absi(mine.size() - tiles.size())
+		if diff == 1:
+			near.append(other)
+		else:
+			far.append(other)
+	if not near.is_empty():
+		return near[randi() % near.size()]
+	if not far.is_empty():
+		return far[randi() % far.size()]
+	return entry

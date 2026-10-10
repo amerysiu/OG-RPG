@@ -11,12 +11,12 @@ todos:
       Milestone 1: expand the world with a wild area, place wandering monsters,
       and add the Word Build mini-game that defeats a monster and pays gold plus
       a resource.
-    status: pending
+    status: completed
   - id: m2-minigame-arcade
     content: >-
       Milestone 2: add the rest of the OG mini-games (Elkonin boxes, word chain,
       syllable sort, which-spelling) and give each monster type one.
-    status: pending
+    status: in_progress
   - id: m3-resources-inventory
     content: >-
       Milestone 3: gatherable resource nodes in the wild, pickups, and an

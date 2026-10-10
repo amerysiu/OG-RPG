@@ -6,6 +6,6 @@ Autoloads: `RoomStateManager` (Summer set_synced/get_synced + ENet fallback), `Z
 
 Zones: 1 Phoneme Village (lv 1-5, graphemes), 2 Syllable Woods (lv 6-12, CVC/digraphs), 3 Orthography Citadel (lv 13+, affixes/irregulars).
 
-Monster combat modes: speed blending, audio shielding, kinesthetic forging. Combat is assessment; fuse/stream loops, never punishes.
+Monster combat modes: speed blending, audio shielding, kinesthetic forging. Combat is assessment; fuse/stream loops, never punishes. In `battle_screen`, speed→Light Hit ★, audio→Wand Magic ★, forge→Heavy Hit ★ (Heavy on forge monsters is a 2-word chain). Light Hit on a final /k/ word becomes Which Spelling? (c/k/ck).
 
 Do not extend `SummerGame` unless the class exists in the running engine. RoomStateManager already binds to `Summer` / `set_synced` when present.

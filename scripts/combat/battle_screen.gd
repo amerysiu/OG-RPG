@@ -7,13 +7,17 @@ extends Control
 ## player - never the monster - chooses the attack, and the attack decides
 ## which question is asked:
 ##
-##   Light Hit  (sword) - the word is given; click its sounds in order, 1 hit
-##   Heavy Hit  (sword) - build a harder word from its letters, 2 hits
-##   Wand Magic (wand)  - hear the word only, then click its sounds, 1 hit
+##   Light Hit  (sword) - the word is given; click its sounds in order, 1 hit.
+##                        Final /k/ words become a Which Spelling? c/k/ck pick.
+##   Heavy Hit  (sword) - build a harder word from its letters, 2 hits.
+##                        Forge monsters chain two related words.
+##   Wand Magic (wand)  - hear the word only, then click its sounds, 1 hit.
 ##
-## Harder questions carry more redundant sounds (or letters) that do not belong
-## in the word. Every click plays the sound it stands for. Backspace, or tapping
-## a chosen tile again, takes it back.
+## The monster's combat mode (speed / audio / forge) stars its signature attack
+## so each bestiary type has a visible home. Harder questions carry more
+## redundant sounds (or letters) that do not belong in the word. Every click
+## plays the sound it stands for. Backspace, or tapping a chosen tile again,
+## takes it back.
 ##
 ## Three wrong tries end the attack as a miss. This screen reports facts only;
 ## the world decides what a hit or a miss costs.
@@ -31,9 +35,10 @@ const MAX_TRIES := 3
 const PICK_SECONDS := 0.55
 
 ## Which question the player is answering.
-##   BUILD   - tap grapheme (or syllable) tiles to spell the word.
-##   PHONEME - the word is given; click the sounds that make it.
-enum QMode { BUILD, PHONEME }
+##   BUILD      - tap grapheme (or syllable) tiles to spell the word.
+##   PHONEME    - the word is given; click the sounds that make it.
+##   SPELL_RULE - Which Spelling? — choose c / k / ck for a final /k/.
+enum QMode { BUILD, PHONEME, SPELL_RULE }
 
 var _active := false
 var _locked := true
@@ -44,6 +49,7 @@ var _level := 1
 var _hits_left := 1
 var _hits_total := 1
 var _monster_name := "Monster"
+var _combat_mode := "speed"
 
 var _entry: Dictionary = {}
 var _mode: int = QMode.BUILD
@@ -56,6 +62,11 @@ var _distractors := 4
 var _audio_only := false
 var _typed := ""
 var _exclude: Array = []
+
+## Word Chain (forge / Heavy Hit): a second word that must be solved after
+## the first. Solving only the first word is not a full hit.
+var _chain: Dictionary = {}
+var _chain_step := 0
 
 ## Phoneme-pick state: the correct sound sequence, the clickable tiles (each a
 ## {"sound", "grapheme", "node"} dictionary) and the tiles chosen so far.
@@ -100,12 +111,14 @@ func _ready() -> void:
 # ----------------------------------------------------------------- encounter
 
 ## Open the screen for one monster. `texture` is the blown-up portrait.
-func open_battle(monster_name: String, texture: Texture2D, zone_id: int, level: int, hits_left: int, hits_total: int) -> void:
+## `combat_mode` (speed / audio / forge) marks that type's signature attack.
+func open_battle(monster_name: String, texture: Texture2D, zone_id: int, level: int, hits_left: int, hits_total: int, combat_mode: String = "speed") -> void:
 	_active = true
 	_defeated = false
 	_zone_id = maxi(1, zone_id)
 	_level = maxi(1, level)
 	_monster_name = monster_name
+	_combat_mode = combat_mode
 	_hits_total = maxi(1, hits_total)
 	_hits_left = hits_left
 	_exclude.clear()
@@ -115,6 +128,7 @@ func open_battle(monster_name: String, texture: Texture2D, zone_id: int, level: 
 	_sprite.scale = Vector2.ONE
 	_sprite.modulate = Color.WHITE
 	_refresh_hp()
+	_refresh_signature()
 	show()
 	begin_round("Sword Light is easier (1 HP). Sword Heavy is harder (2 HP). Wand is listen-only (1 HP).")
 
@@ -125,6 +139,8 @@ func begin_round(note: String) -> void:
 		return
 	_locked = false
 	_entry = {}
+	_chain = {}
+	_chain_step = 0
 	_tiles = []
 	_placed = []
 	_picked = []
@@ -139,6 +155,28 @@ func begin_round(note: String) -> void:
 	_prompt.text = "Pick Sword Light, Sword Heavy, or Wand Magic."
 	_message.text = note
 	_start_idle()
+	_refresh_signature()
+
+
+## The monster type's matching attack is starred so bestiary variety is visible.
+func _refresh_signature() -> void:
+	var labels := {
+		"light": "Sword Light  ·  1",
+		"heavy": "Sword Heavy  ·  2",
+		"magic": "Wand Magic  ·  1",
+	}
+	var star := {"light": "Sword Light ★  ·  1", "heavy": "Sword Heavy ★  ·  2", "magic": "Wand Magic ★  ·  1"}
+	var sig := "light"
+	match _combat_mode:
+		"audio":
+			sig = "magic"
+		"forge":
+			sig = "heavy"
+		_:
+			sig = "light"
+	_light.text = String(star["light"] if sig == "light" else labels["light"])
+	_heavy.text = String(star["heavy"] if sig == "heavy" else labels["heavy"])
+	_magic.text = String(star["magic"] if sig == "magic" else labels["magic"])
 
 
 func set_hits_left(value: int) -> void:
@@ -200,6 +238,19 @@ func _on_attack(method: String) -> void:
 	# word) cannot be answered sound by sound, so fall back to spelling it.
 	if _mode == QMode.PHONEME and _entry.get("sounds", []).size() != _entry.get("tiles", []).size():
 		_mode = QMode.BUILD
+	# Which Spelling? for Light Hit on a final /k/ word (c / k / ck rule).
+	if _mode == QMode.PHONEME and method == "light" and OGWords.is_which_spelling_k(_entry):
+		_mode = QMode.SPELL_RULE
+	# Word Chain: forge monsters' Heavy Hit asks two related words in a row.
+	_chain = {}
+	_chain_step = 0
+	if method == "heavy" and _combat_mode == "forge":
+		_chain = OGWords.chain_partner(_entry, _exclude)
+		var partner := String(_chain.get("word", ""))
+		if partner != "":
+			_exclude.append(partner)
+			if _exclude.size() > 8:
+				_exclude.pop_front()
 	_load_question()
 
 
@@ -223,35 +274,64 @@ func _load_question() -> void:
 	_typed = ""
 	_tries = 0
 	_clear_question()
-	if _mode == QMode.PHONEME:
-		_phoneme_sounds = _entry.get("sounds", [])
-		if _audio_only:
-			_prompt.text = "Listen, then click the sounds you hear."
-		else:
-			_prompt.text = "Which sounds make %s?" % String(_entry.get("word", "")).to_upper()
-		_rebuild_slots(_phoneme_sounds)
-		_slot_row.show()
-		_rebuild_phoneme_tiles()
-		_tile_pool.show()
-	else:
-		_phoneme_sounds = []
-		if _audio_only:
-			_prompt.text = "Listen, then tap the matching sounds in order."
-		else:
-			_prompt.text = "Build the word: tap each sound in order."
-			_rebuild_chips()
-			_sound_row.show()
-		_rebuild_slots(_tiles)
-		_slot_row.show()
-		_rebuild_tiles()
-		_tile_pool.show()
+	var chain_note := ""
+	if _chain_step > 0:
+		chain_note = "  (Word Chain 2 of 2)"
+	match _mode:
+		QMode.SPELL_RULE:
+			_load_spell_rule(chain_note)
+		QMode.PHONEME:
+			_load_phoneme(chain_note)
+		_:
+			_load_build(chain_note)
 	_hear.show()
 	_back.show()
-	_message.text = "Land it for %d HP. %d wrong tries and this attack misses." % [_damage, MAX_TRIES]
+	_message.text = "Land it for %d HP.%s  %d wrong tries and this attack misses." % [_damage, chain_note, MAX_TRIES]
 	# The question is ready, so unlock answering. _on_attack locked the screen
 	# while it picked the word; without this the tiles and keys stay dead.
 	_locked = false
 	_play_word()
+
+
+## Which Spelling? — the word is known; pick c, k or ck for the final /k/.
+func _load_spell_rule(chain_note: String) -> void:
+	_phoneme_sounds = []
+	_prompt.text = "Which spelling makes the final /k/ in %s?%s" % [String(_entry.get("word", "")).to_upper(), chain_note]
+	_rebuild_slots(["final /k/"])
+	_slot_row.show()
+	for child in _tile_pool.get_children():
+		child.queue_free()
+	for g in ["c", "k", "ck"]:
+		var btn := CombatUI.grapheme_button(g, Vector2(96, 76))
+		btn.pressed.connect(_on_spell_rule.bind(g, btn))
+		_tile_pool.add_child(btn)
+	_tile_pool.show()
+
+
+func _load_phoneme(chain_note: String) -> void:
+	_phoneme_sounds = _entry.get("sounds", [])
+	if _audio_only:
+		_prompt.text = "Listen, then click the sounds you hear.%s" % chain_note
+	else:
+		_prompt.text = "Which sounds make %s?%s" % [String(_entry.get("word", "")).to_upper(), chain_note]
+	_rebuild_slots(_phoneme_sounds)
+	_slot_row.show()
+	_rebuild_phoneme_tiles()
+	_tile_pool.show()
+
+
+func _load_build(chain_note: String) -> void:
+	_phoneme_sounds = []
+	if _audio_only:
+		_prompt.text = "Listen, then tap the matching sounds in order.%s" % chain_note
+	else:
+		_prompt.text = "Build the word: tap each sound in order.%s" % chain_note
+		_rebuild_chips()
+		_sound_row.show()
+	_rebuild_slots(_tiles)
+	_slot_row.show()
+	_rebuild_tiles()
+	_tile_pool.show()
 
 
 ## The scaffold row of the target sounds. Hidden when the sounds ARE the answer.
@@ -393,6 +473,21 @@ func _accept(g: String, btn: Button) -> void:
 
 # ------------------------------ answering: click the sounds that make a word
 
+func _on_spell_rule(g: String, btn: Button) -> void:
+	if not _active or _locked or _entry.is_empty():
+		return
+	_play_tile(g)
+	var expected := OGWords.which_spelling_k_answer(_entry)
+	if g != expected:
+		_tries += 1
+		_message.text = "Not %s. The word spells it %s." % [g, expected]
+		if _tries >= MAX_TRIES:
+			_resolve_miss()
+		return
+	_message.text = "Yes — %s spells the final /k/." % g
+	_resolve_hit()
+
+
 func _on_phoneme(item: Dictionary, btn: Button) -> void:
 	if not _active or _locked or _entry.is_empty():
 		return
@@ -466,9 +561,22 @@ func _take_back() -> void:
 
 func _resolve_hit() -> void:
 	_locked = true
-	_message.text = "Hit! %s  (−%d HP)" % [String(_entry.get("word", "")).to_upper(), _damage]
+	# Word Chain: the first of two words only advances the chain.
+	if not _chain.is_empty() and _chain_step == 0:
+		_chain_step = 1
+		_message.text = "First word down! Chain the next one — same attack."
+		_entry = _chain
+		_chain = {}
+		var tw := create_tween()
+		tw.tween_interval(0.55)
+		tw.tween_callback(func():
+			if _active:
+				_load_question())
+		return
+	var word := String(_entry.get("word", ""))
+	_message.text = "Hit! %s  (−%d HP)" % [word.to_upper(), _damage]
 	_play_hit_anim()
-	word_solved.emit(String(_entry.get("word", "")), _damage)
+	word_solved.emit(word, _damage)
 
 
 func _resolve_miss() -> void:
