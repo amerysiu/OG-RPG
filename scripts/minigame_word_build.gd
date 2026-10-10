@@ -69,7 +69,8 @@ func _build_match_mode() -> void:
 	var pool_selection = OGWords.tile_pool(_entry, _distractor_count)
 	var correct_idx = randi() % pool_selection.size()
 	var placed_set = false
-	for i, grapheme in pool_selection:
+	for i in range(pool_selection.size()):
+		var grapheme = pool_selection[i]
 		var tile_btn = Button.new()
 		tile_btn.text = String(grapheme)
 		tile_btn.custom_minimum_size = Vector2(80, 80)
@@ -91,7 +92,8 @@ func _build_multiple_choice_mode() -> void:
 	var all_tiles = _entry.get("tiles", []).duplicate()
 	all_tiles.append_array(pool_selection)
 	all_tiles.shuffle()
-	for i, grapheme in all_tiles:
+	for i in range(all_tiles.size()):
+		var grapheme = all_tiles[i]
 		var tile_btn = Button.new()
 		tile_btn.text = String(grapheme)
 		tile_btn.custom_minimum_size = Vector2(80, 80)
