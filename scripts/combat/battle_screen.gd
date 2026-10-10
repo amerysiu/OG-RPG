@@ -33,6 +33,8 @@ const OGWords := preload("res://scripts/og_words.gd")
 const MAX_TRIES := 3
 ## Gap between phonemes when the word prompt is played.
 const PICK_SECONDS := 0.55
+## Silence after the full sequence before it repeats once for clarity.
+const REPEAT_DELAY_SECONDS := 2.0
 
 ## Which question the player is answering.
 ##   BUILD      - tap grapheme (or syllable) tiles to spell the word.
@@ -67,6 +69,8 @@ var _exclude: Array = []
 ## the first. Solving only the first word is not a full hit.
 var _chain: Dictionary = {}
 var _chain_step := 0
+## Bumps whenever a new Hear pass starts so older timers stop stacking.
+var _play_gen := 0
 
 ## Phoneme-pick state: the correct sound sequence, the clickable tiles (each a
 ## {"sound", "grapheme", "node"} dictionary) and the tiles chosen so far.
@@ -629,6 +633,29 @@ func _play_miss_anim() -> void:
 func _play_word() -> void:
 	if _entry.is_empty():
 		return
+	_play_gen += 1
+	var gen := _play_gen
+	_play_pass(gen)
+	# One more full pass after a 2 s break so the player can hear it again.
+	get_tree().create_timer(_pass_duration() + REPEAT_DELAY_SECONDS).timeout.connect(func():
+		if _active and gen == _play_gen:
+			_play_pass(gen))
+
+
+func _pass_duration() -> float:
+	var total := 0.12
+	for tile in _tiles:
+		var stream := CCAssetFetcher.phoneme_stream(String(tile))
+		total += maxf(PICK_SECONDS, (stream.get_length() if stream != null else 0.25) + 0.12)
+	var word_stream := CCAssetFetcher.word_stream(String(_entry.get("word", "")))
+	if word_stream != null:
+		total += maxf(PICK_SECONDS, word_stream.get_length() + 0.12)
+	return total
+
+
+func _play_pass(gen: int) -> void:
+	if not _active or gen != _play_gen or _entry.is_empty():
+		return
 	_play_next(_tiles, 0)
 	# After the sound tiles, say the whole word so the player hears the result.
 	var word_stream := CCAssetFetcher.word_stream(String(_entry.get("word", "")))
@@ -639,7 +666,7 @@ func _play_word() -> void:
 		var stream := CCAssetFetcher.phoneme_stream(String(tile))
 		total += maxf(PICK_SECONDS, (stream.get_length() if stream != null else 0.25) + 0.12)
 	get_tree().create_timer(total).timeout.connect(func():
-		if _active:
+		if _active and gen == _play_gen:
 			_audio.stream = word_stream
 			_audio.play())
 
@@ -653,7 +680,10 @@ func _play_next(tiles: Array, i: int) -> void:
 	var stream := CCAssetFetcher.phoneme_stream(String(tiles[i]))
 	if stream != null:
 		gap = maxf(PICK_SECONDS, stream.get_length() + 0.12)
-	get_tree().create_timer(gap).timeout.connect(func(): _play_next(tiles, i + 1))
+	var gen := _play_gen
+	get_tree().create_timer(gap).timeout.connect(func():
+		if _active and gen == _play_gen:
+			_play_next(tiles, i + 1))
 
 
 func _play_tile(tile: String) -> void:
