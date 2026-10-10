@@ -245,15 +245,15 @@ func _on_attack_chosen(method: String) -> void:
 	RoomStateManager.set_combat(method, monster_name)
 
 
-func _on_word_solved(word: String) -> void:
+func _on_word_solved(word: String, damage: int = 1) -> void:
 	if not _busy or _monster == null or not is_instance_valid(_monster):
 		return
-	_hits_left = maxi(0, _hits_left - 1)
+	_hits_left = maxi(0, _hits_left - maxi(1, damage))
 	_monster.call("set_hits_left", _hits_left)
 	if _hits_left > 0:
 		_battle.call("set_hits_left", _hits_left)
-		_status.text = "%s! %s has %d hits left." % [word.to_upper(), String(_monster.display_name), _hits_left]
-		_battle.call("begin_round", "%s! %d hits left - pick another attack." % [word.to_upper(), _hits_left])
+		_status.text = "%s (−%d)! %s has %d HP left." % [word.to_upper(), maxi(1, damage), String(_monster.display_name), _hits_left]
+		_battle.call("begin_round", "%s hit for %d. %d HP left — pick another attack." % [word.to_upper(), maxi(1, damage), _hits_left])
 		RoomStateManager.set_combat("choose", String(_monster.display_name))
 		return
 	var gold := maxi(1, _hits_total * 2)

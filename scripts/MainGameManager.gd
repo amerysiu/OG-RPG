@@ -5,7 +5,7 @@
 # and multi-sensory action button events optimized for web, desktop, and touch inputs.
 # ==============================================================================
 
-extends Node2D
+extends Node
 
 # --- LINGUISTIC DICTIONARY DEFINITIONS ---
 const VOWELS = ["a", "e", "i", "o", "u"]
@@ -20,15 +20,15 @@ var current_job: JobClass = JobClass.NOVICE
 var player_level: int = 1
 var player_xp: int = 0
 
-# --- WORD PROGRESSION TIERS (OG SCOPE & SEQUENCE) ---
-var cvc_words = ["cat", "hop", "bin", "mat", "sun", "pig", "fed", "cup", "map", "net"]
-var ccvc_words = ["stop", "frog", "flag", "plum", "spot", "drop", "skid", "clip", "plan"]
-var cvcc_words = ["fast", "tent", "hand", "lamp", "desk", "milk", "rust", "belt", "fond"]
+# --- OG WORD ACCESS ---
+const OGWords := preload("res://scripts/og_words.gd")
 
 # --- ACTIVE COMBAT DATA ---
 var current_target_word: String = ""
 var expected_sequence: Array = []
 var player_input_sequence: Array = []
+var current_zone: int = 1
+var current_monster_level: int = 1
 
 # --- MULTI-SENSORY UI NODE REFERENCES ---
 var action_bar_container: HBoxContainer
@@ -42,8 +42,11 @@ var monster_anim_sprite: AnimatedSprite2D
 # ==============================================================================
 func _ready() -> void:
 	print("[SYSTEM] Initializing Orton-Gillingham Game Core on Summer Engine...")
-	setup_node_hierarchy()
-	start_new_battle_encounter()
+	current_zone = 1
+	current_monster_level = 1
+	# Autoload only tracks progression state. UI and fights live in iso_world /
+	# battle_screen; call start_new_battle_encounter() from a scene that wants
+	# the legacy action-bar loop.
 
 func setup_node_hierarchy() -> void:
 	# Ensure the required audio hierarchy exists
@@ -70,11 +73,7 @@ func setup_node_hierarchy() -> void:
 		
 	action_bar_container = HBoxContainer.new()
 	action_bar_container.name = "ActionBar"
-	action_bar_container = HBoxContainer.new()
-	action_bar_container.name = "ActionBar"
 	action_bar_container.set_anchors_and_offsets_preset(12)
-	canvas.add_child(action_bar_container)
-
 	canvas.add_child(action_bar_container)
 
 	cast_progress_bar = TextureProgressBar.new()
@@ -106,29 +105,56 @@ func split_word_into_graphemes(word: String) -> Array:
 # MULTI-SENSORY SYSTEM CORE & GAMEPLAY LOOPS
 # ==============================================================================
 func start_new_battle_encounter() -> void:
+	if action_bar_container == null:
+		setup_node_hierarchy()
 	player_input_sequence.clear()
 	if cast_progress_bar: cast_progress_bar.value = 0
 	
-	match current_job:
-		JobClass.NOVICE:
-			current_target_word = cvc_words[randi() % cvc_words.size()]
-		JobClass.SWORDSMAN:
-			var combined_pool = ccvc_words + cvcc_words
-			current_target_word = combined_pool[randi() % combined_pool.size()]
-			
+	# Select word using OG scope & sequence, based on zone and monster level
+	var picked = OGWords.pick_word_for_zone(current_zone, current_monster_level)
+	current_target_word = String(picked.get("word", "cat"))
+	
+	# Determine the phonics pattern name for display
+	var pattern_name = OGWords.level_focus(1)  # default
+	match current_zone:
+		1:
+			pattern_name = OGWords.level_focus(1)
+		2:
+			pattern_name = OGWords.level_focus(2)
+		3:
+			pattern_name = OGWords.level_focus(3)
+		else:
+			pattern_name = "review words"
+	
+	# Split word into graphemes for expected sequence
 	expected_sequence = split_word_into_graphemes(current_target_word)
+	
+	# Play the phoneme sound for the target word
 	play_phoneme_sound(current_target_word)
-	generate_grapheme_interface_cards()
+	
+	# Generate grapheme interface cards
+	generate_grapheme_interface_cards(pattern_name)
 
-func generate_grapheme_interface_cards() -> void:
+func generate_grapheme_interface_cards(pattern_name: String = "CVC words") -> void:
 	if not action_bar_container: return
 	for child in action_bar_container.get_children():
 		child.queue_free()
 		
-	var available_choices = []
+	var available_choices: Array = []
+	
+	# Build choice pool from the expected sequence graphemes
 	for g in expected_sequence:
 		if not g in available_choices: available_choices.append(g)
 		
+	# Add distractor graphemes from the same level's pool
+	var entry = OGWords.words_for_level(expected_sequence.size())
+	if not entry.is_empty():
+		var tile_pool = OGWords.tile_pool(entry[0], 3)
+		for tile in tile_pool:
+			if not tile in available_choices and not tile in expected_sequence:
+				available_choices.append(tile)
+	
+	# Fill up to 4 choices total
 	while available_choices.size() < 4:
 		var random_letter = CONSONANTS[randi() % CONSONANTS.size()]
 		if not random_letter in available_choices:
@@ -153,11 +179,19 @@ func generate_grapheme_interface_cards() -> void:
 # AUDITORY REINFORCEMENT CONTROLLER
 # ==============================================================================
 func play_phoneme_sound(sound_name: String) -> void:
-	var path = "res://audio/phonemes/" + sound_name.to_lower() + ".wav"
-	if ResourceLoader.exists(path):
-		var sound_clip = load(path)
-		prompt_audio_player.stream = sound_clip
+	# Use the consistent phoneme system from cc_asset_fetcher
+	var key := sound_name.to_lower().strip_edges()
+	var stream := CCAssetFetcher.phoneme_stream(key)
+	if stream != null:
+		prompt_audio_player.stream = stream
 		prompt_audio_player.play()
+	else:
+		# Fallback: try direct file path
+		var path = "res://audio/phonemes/" + key + ".wav"
+		if ResourceLoader.exists(path):
+			var sound_clip = load(path)
+			prompt_audio_player.stream = sound_clip
+			prompt_audio_player.play()
 
 func play_feedback_sound(is_correct: bool) -> void:
 	var path = "res://audio/effects/" + ("hit.wav" if is_correct else "clink.wav")
@@ -191,14 +225,39 @@ func execute_successful_word_strike() -> void:
 		monster_anim_sprite.play("hurt")
 		
 	player_xp += 25
+	
+	# Advance zone/monster level based on word difficulty
+	current_monster_level = current_zone * 2 + randi() % 3
+	
+	var new_level = OGWords.pick_word_for_zone(current_zone, player_level)
+	current_target_word = String(new_level.get("word", "cat"))
+	
+	expected_sequence = split_word_into_graphemes(current_target_word)
+	play_phoneme_sound(current_target_word)
+	generate_grapheme_interface_cards(OGWords.level_focus(expected_sequence.size()))
+	
 	if player_xp >= 100:
 		award_level_up()
 		
 	get_tree().create_timer(1.2).timeout.connect(self.start_new_battle_encounter)
 
+func award_xp_for_word() -> void:
+	player_xp += 10
+	print("[SYSTEM] Word solved! +10 XP. Total: " + str(player_xp))
+
 func award_level_up() -> void:
 	player_level += 1
 	player_xp = 0
+	
+	# Advance zone every few levels, increase monster difficulty
+	if player_level % 5 == 0:
+		current_zone += 1
+		if current_zone > 3:
+			current_zone = 3
+	
+	# Update monster level based on zone
+	current_monster_level = current_zone * 2 + randi() % 3
+	
 	if player_level == 5 and current_job == JobClass.NOVICE:
 		current_job = JobClass.SWORDSMAN
 

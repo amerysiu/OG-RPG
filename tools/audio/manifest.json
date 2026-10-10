@@ -1,0 +1,462 @@
+{
+  "source": "scripts/og_words.gd",
+  "phonemes": {
+    "a": {
+      "text": "ah",
+      "alts": [
+        "aah",
+        "at"
+      ]
+    },
+    "ai": {
+      "text": "eh",
+      "alts": []
+    },
+    "b": {
+      "text": "buh",
+      "alts": []
+    },
+    "c": {
+      "text": "kuh",
+      "alts": []
+    },
+    "ch": {
+      "text": "chuh",
+      "alts": [
+        "ch"
+      ]
+    },
+    "ck": {
+      "text": "kuh",
+      "alts": []
+    },
+    "d": {
+      "text": "duh",
+      "alts": []
+    },
+    "e": {
+      "text": "eh",
+      "alts": [
+        "ehh",
+        "ed"
+      ]
+    },
+    "ea": {
+      "text": "ee",
+      "alts": []
+    },
+    "f": {
+      "text": "fff",
+      "alts": []
+    },
+    "g": {
+      "text": "guh",
+      "alts": []
+    },
+    "h": {
+      "text": "huh",
+      "alts": [
+        "hhh"
+      ]
+    },
+    "i": {
+      "text": "ih",
+      "alts": [
+        "ihh",
+        "it"
+      ]
+    },
+    "j": {
+      "text": "juh",
+      "alts": []
+    },
+    "k": {
+      "text": "kuh",
+      "alts": []
+    },
+    "l": {
+      "text": "lll",
+      "alts": []
+    },
+    "m": {
+      "text": "mmm",
+      "alts": []
+    },
+    "n": {
+      "text": "nnn",
+      "alts": []
+    },
+    "o": {
+      "text": "o",
+      "alts": [
+        "oh",
+        "off"
+      ]
+    },
+    "p": {
+      "text": "puh",
+      "alts": []
+    },
+    "r": {
+      "text": "rrr",
+      "alts": []
+    },
+    "s": {
+      "text": "sss",
+      "alts": []
+    },
+    "sh": {
+      "text": "shh",
+      "alts": [
+        "shhh"
+      ]
+    },
+    "t": {
+      "text": "tuh",
+      "alts": []
+    },
+    "th": {
+      "text": "th",
+      "alts": [
+        "thh",
+        "thuh"
+      ]
+    },
+    "u": {
+      "text": "uh",
+      "alts": [
+        "uhh",
+        "up"
+      ]
+    },
+    "v": {
+      "text": "vvv",
+      "alts": []
+    },
+    "w": {
+      "text": "wuh",
+      "alts": []
+    },
+    "x": {
+      "text": "ks",
+      "alts": [
+        "kss"
+      ]
+    },
+    "z": {
+      "text": "zzz",
+      "alts": []
+    }
+  },
+  "words": {
+    "a": {
+      "text": "ah"
+    },
+    "am": {
+      "text": "am"
+    },
+    "area": {
+      "text": "area"
+    },
+    "at": {
+      "text": "at"
+    },
+    "bat": {
+      "text": "bat"
+    },
+    "because": {
+      "text": "because"
+    },
+    "bed": {
+      "text": "bed"
+    },
+    "box": {
+      "text": "box"
+    },
+    "brim": {
+      "text": "brim"
+    },
+    "cabin": {
+      "text": "cabin"
+    },
+    "cap": {
+      "text": "cap"
+    },
+    "cat": {
+      "text": "cat"
+    },
+    "chat": {
+      "text": "chat"
+    },
+    "chin": {
+      "text": "chin"
+    },
+    "chip": {
+      "text": "chip"
+    },
+    "clap": {
+      "text": "clap"
+    },
+    "come": {
+      "text": "come"
+    },
+    "crab": {
+      "text": "crab"
+    },
+    "crown": {
+      "text": "crown"
+    },
+    "dog": {
+      "text": "dog"
+    },
+    "drift": {
+      "text": "drift"
+    },
+    "drum": {
+      "text": "drum"
+    },
+    "duck": {
+      "text": "duck"
+    },
+    "fish": {
+      "text": "fish"
+    },
+    "flag": {
+      "text": "flag"
+    },
+    "friend": {
+      "text": "friend"
+    },
+    "frog": {
+      "text": "frog"
+    },
+    "from": {
+      "text": "from"
+    },
+    "glad": {
+      "text": "glad"
+    },
+    "grin": {
+      "text": "grin"
+    },
+    "have": {
+      "text": "have"
+    },
+    "helpful": {
+      "text": "helpful"
+    },
+    "hen": {
+      "text": "hen"
+    },
+    "i": {
+      "text": "ih"
+    },
+    "in": {
+      "text": "in"
+    },
+    "it": {
+      "text": "it"
+    },
+    "jam": {
+      "text": "jam"
+    },
+    "kindness": {
+      "text": "kindness"
+    },
+    "lock": {
+      "text": "lock"
+    },
+    "log": {
+      "text": "log"
+    },
+    "m": {
+      "text": "mmm"
+    },
+    "magnet": {
+      "text": "magnet"
+    },
+    "man": {
+      "text": "man"
+    },
+    "map": {
+      "text": "map"
+    },
+    "mat": {
+      "text": "mat"
+    },
+    "moth": {
+      "text": "moth"
+    },
+    "music": {
+      "text": "music"
+    },
+    "n": {
+      "text": "nnn"
+    },
+    "nap": {
+      "text": "nap"
+    },
+    "napkin": {
+      "text": "napkin"
+    },
+    "p": {
+      "text": "puh"
+    },
+    "pan": {
+      "text": "pan"
+    },
+    "picnic": {
+      "text": "picnic"
+    },
+    "pig": {
+      "text": "pig"
+    },
+    "pin": {
+      "text": "pin"
+    },
+    "plan": {
+      "text": "plan"
+    },
+    "plum": {
+      "text": "plum"
+    },
+    "rabbit": {
+      "text": "rabbit"
+    },
+    "replay": {
+      "text": "replay"
+    },
+    "reread": {
+      "text": "reread"
+    },
+    "rich": {
+      "text": "rich"
+    },
+    "rip": {
+      "text": "rip"
+    },
+    "s": {
+      "text": "sss"
+    },
+    "sadness": {
+      "text": "sadness"
+    },
+    "said": {
+      "text": "said"
+    },
+    "sam": {
+      "text": "sam"
+    },
+    "sat": {
+      "text": "sat"
+    },
+    "ship": {
+      "text": "ship"
+    },
+    "shop": {
+      "text": "shop"
+    },
+    "sip": {
+      "text": "sip"
+    },
+    "sit": {
+      "text": "sit"
+    },
+    "slash": {
+      "text": "slash"
+    },
+    "slip": {
+      "text": "slip"
+    },
+    "snap": {
+      "text": "snap"
+    },
+    "sock": {
+      "text": "sock"
+    },
+    "spin": {
+      "text": "spin"
+    },
+    "stop": {
+      "text": "stop"
+    },
+    "sun": {
+      "text": "sun"
+    },
+    "sunset": {
+      "text": "sunset"
+    },
+    "sweep": {
+      "text": "sweep"
+    },
+    "swim": {
+      "text": "swim"
+    },
+    "t": {
+      "text": "tuh"
+    },
+    "tap": {
+      "text": "tap"
+    },
+    "then": {
+      "text": "then"
+    },
+    "thin": {
+      "text": "thin"
+    },
+    "top": {
+      "text": "top"
+    },
+    "trap": {
+      "text": "trap"
+    },
+    "trip": {
+      "text": "trip"
+    },
+    "twin": {
+      "text": "twin"
+    },
+    "unpack": {
+      "text": "unpack"
+    },
+    "was": {
+      "text": "was"
+    },
+    "web": {
+      "text": "web"
+    },
+    "wish": {
+      "text": "wish"
+    }
+  },
+  "notes": {
+    "skipped_blend_tiles": [
+      "be",
+      "bl",
+      "br",
+      "cl",
+      "cr",
+      "dr",
+      "fl",
+      "fr",
+      "gr",
+      "ic",
+      "ie",
+      "in",
+      "me",
+      "nd",
+      "pl",
+      "re",
+      "sl",
+      "sn",
+      "sp",
+      "st",
+      "sw",
+      "tr",
+      "un",
+      "us",
+      "ve"
+    ],
+    "comment": "Blend tiles (st, fl, ...) have no single-phoneme prompt; the game should play their letters in sequence instead."
+  }
+}

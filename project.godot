@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="OG English Learning"
-run/main_scene="res://scenes/village.tscn"
+run/main_scene="res://scenes/iso_world.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -21,6 +21,13 @@ window/size/viewport_width=1154.0
 window/size/viewport_height=640.0
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[autoload]
+
+RoomStateManager="*res://scripts/net/room_state_manager.gd"
+ZoneCatalog="*res://scripts/world/zone_catalog.gd"
+CCAssetFetcher="*res://scripts/assets/cc_asset_fetcher.gd"
+MainGameManager="*res://scripts/MainGameManager.gd"
 
 [dotnet]
 

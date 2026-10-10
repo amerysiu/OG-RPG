@@ -1,0 +1,234 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/battle_scene.gd" id="1_script"]
+
+[node name="BattleScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+color = Color(0.04, 0.03, 0.08, 0.92)
+
+[node name="Split" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+theme_override_constants/separation = 16
+
+[node name="LeftPane" type="ColorRect" parent="Split"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.08, 0.07, 0.14, 1)
+
+[node name="Backdrop" type="TextureRect" parent="Split/LeftPane"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand_mode = 1
+stretch_mode = 6
+modulate = Color(1, 1, 1, 0.55)
+
+[node name="MonsterAnchor" type="Control" parent="Split/LeftPane"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MonsterSprite" type="TextureRect" parent="Split/LeftPane/MonsterAnchor"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -170.0
+offset_right = 150.0
+offset_bottom = 110.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Slash" type="ColorRect" parent="Split/LeftPane/MonsterAnchor"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = -8.0
+offset_right = 130.0
+offset_bottom = 8.0
+rotation = -0.5
+color = Color(1, 0.95, 0.7, 0.9)
+
+[node name="MonsterName" type="Label" parent="Split/LeftPane"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 16.0
+offset_bottom = 52.0
+theme_override_colors/font_color = Color(0.98, 0.94, 1, 1)
+theme_override_font_sizes/font_size = 26
+text = "Monster"
+horizontal_alignment = 1
+
+[node name="HpLabel" type="Label" parent="Split/LeftPane"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -78.0
+offset_bottom = -50.0
+theme_override_colors/font_color = Color(0.95, 0.82, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+text = "HP  2 / 2"
+horizontal_alignment = 1
+
+[node name="HpBar" type="ProgressBar" parent="Split/LeftPane"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -44.0
+offset_right = -24.0
+offset_bottom = -18.0
+max_value = 2.0
+value = 2.0
+show_percentage = false
+
+[node name="RightPane" type="ColorRect" parent="Split"]
+custom_minimum_size = Vector2(520, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.25
+color = Color(0.12, 0.1, 0.22, 0.98)
+
+[node name="Margin" type="MarginContainer" parent="Split/RightPane"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 18
+
+[node name="Root" type="VBoxContainer" parent="Split/RightPane/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Split/RightPane/Margin/Root"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 26
+text = "Your turn — answer to attack"
+horizontal_alignment = 1
+
+[node name="Pattern" type="Label" parent="Split/RightPane/Margin/Root"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.78, 0.95, 1)
+theme_override_font_sizes/font_size = 16
+text = "CVC"
+horizontal_alignment = 1
+
+[node name="Prompt" type="Label" parent="Split/RightPane/Margin/Root"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(480, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "Build the word."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SoundRow" type="HBoxContainer" parent="Split/RightPane/Margin/Root"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="SlotRow" type="HBoxContainer" parent="Split/RightPane/Margin/Root"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="TilePool" type="HFlowContainer" parent="Split/RightPane/Margin/Root"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(480, 80)
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 8
+alignment = 1
+
+[node name="ChoiceBox" type="VBoxContainer" parent="Split/RightPane/Margin/Root"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Message" type="Label" parent="Split/RightPane/Margin/Root"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(480, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.82, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+text = "A correct answer is one hit."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Split/RightPane/Margin/Root"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="HearButton" type="Button" parent="Split/RightPane/Margin/Root/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 44)
+layout_mode = 2
+focus_mode = 0
+text = "Hear it again"
+
+[node name="BackButton" type="Button" parent="Split/RightPane/Margin/Root/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 44)
+layout_mode = 2
+focus_mode = 0
+text = "Take one back"
+
+[node name="FleeButton" type="Button" parent="Split/RightPane/Margin/Root/Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 44)
+layout_mode = 2
+focus_mode = 0
+text = "Run away (Esc)"

@@ -18,7 +18,7 @@ extends Control
 ## Three wrong tries end the attack as a miss. This screen reports facts only;
 ## the world decides what a hit or a miss costs.
 
-signal word_solved(word: String)
+signal word_solved(word: String, damage: int)
 signal attack_missed
 signal attack_chosen(method: String)
 signal flee_requested
@@ -51,6 +51,7 @@ var _tiles: Array = []
 var _placed: Array = []
 var _slot_buttons: Array = []
 var _tries := 0
+var _damage := 1
 var _distractors := 4
 var _audio_only := false
 var _typed := ""
@@ -115,7 +116,7 @@ func open_battle(monster_name: String, texture: Texture2D, zone_id: int, level: 
 	_sprite.modulate = Color.WHITE
 	_refresh_hp()
 	show()
-	begin_round("Choose your attack - each method asks a different question.")
+	begin_round("Sword Light is easier (1 HP). Sword Heavy is harder (2 HP). Wand is listen-only (1 HP).")
 
 
 ## Back to the attack menu, with a note about what just happened.
@@ -135,7 +136,7 @@ func begin_round(note: String) -> void:
 	for button in [_light, _heavy, _magic]:
 		button.disabled = false
 	_attack_prompt.text = "Choose your attack"
-	_prompt.text = "Pick an attack on the left."
+	_prompt.text = "Pick Sword Light, Sword Heavy, or Wand Magic."
 	_message.text = note
 	_start_idle()
 
@@ -178,23 +179,23 @@ func _on_attack(method: String) -> void:
 	attack_chosen.emit(method)
 	match method:
 		"heavy":
-			# Hardest: spell the word yourself, one step above the monster.
 			_mode = QMode.BUILD
 			_audio_only = false
 			_distractors = 6
+			_damage = 2
 			_entry = _pick_word(_level + 1)
 		"magic":
-			# Sound only: no letters on screen, just what you hear.
 			_mode = QMode.PHONEME
 			_audio_only = true
 			_distractors = 3
+			_damage = 1
 			_entry = _pick_word(_level)
 		_:
-			# Easiest: the word is on screen; click the sounds that make it.
 			_mode = QMode.PHONEME
 			_audio_only = false
 			_distractors = 2
-			_entry = _pick_word(_level)
+			_damage = 1
+			_entry = _pick_word(maxi(1, _level - 1))
 	# A word whose sounds and letters do not line up one-to-one (a two-syllable
 	# word) cannot be answered sound by sound, so fall back to spelling it.
 	if _mode == QMode.PHONEME and _entry.get("sounds", []).size() != _entry.get("tiles", []).size():
@@ -246,7 +247,7 @@ func _load_question() -> void:
 		_tile_pool.show()
 	_hear.show()
 	_back.show()
-	_message.text = "Every click plays its sound. %d wrong tries and the attack misses." % MAX_TRIES
+	_message.text = "Land it for %d HP. %d wrong tries and this attack misses." % [_damage, MAX_TRIES]
 	# The question is ready, so unlock answering. _on_attack locked the screen
 	# while it picked the word; without this the tiles and keys stay dead.
 	_locked = false
@@ -465,14 +466,15 @@ func _take_back() -> void:
 
 func _resolve_hit() -> void:
 	_locked = true
-	_message.text = "Hit! %s" % String(_entry.get("word", "")).to_upper()
+	_message.text = "Hit! %s  (−%d HP)" % [String(_entry.get("word", "")).to_upper(), _damage]
 	_play_hit_anim()
-	word_solved.emit(String(_entry.get("word", "")))
+	word_solved.emit(String(_entry.get("word", "")), _damage)
 
 
 func _resolve_miss() -> void:
 	_locked = true
-	_message.text = "No tries left - the attack misses."
+	_message.text = "Miss! The attack did not land."
+	_play_miss_anim()
 	attack_missed.emit()
 
 
@@ -506,19 +508,44 @@ func _play_hit_anim() -> void:
 	tw.tween_callback(_start_idle)
 
 
+func _play_miss_anim() -> void:
+	_stop_idle()
+	var tw := create_tween()
+	tw.tween_property(_sprite, "modulate", Color(0.7, 0.75, 0.85, 1), 0.08)
+	tw.tween_property(_sprite, "modulate", Color.WHITE, 0.16)
+	tw.tween_callback(_start_idle)
+
+
 # -------------------------------------------------------------------- audio
 
 func _play_word() -> void:
 	if _entry.is_empty():
 		return
 	_play_next(_tiles, 0)
+	# After the sound tiles, say the whole word so the player hears the result.
+	var word_stream := CCAssetFetcher.word_stream(String(_entry.get("word", "")))
+	if word_stream == null or not _active:
+		return
+	var total := 0.12
+	for tile in _tiles:
+		var stream := CCAssetFetcher.phoneme_stream(String(tile))
+		total += maxf(PICK_SECONDS, (stream.get_length() if stream != null else 0.25) + 0.12)
+	get_tree().create_timer(total).timeout.connect(func():
+		if _active:
+			_audio.stream = word_stream
+			_audio.play())
 
 
 func _play_next(tiles: Array, i: int) -> void:
 	if not _active or i >= tiles.size():
 		return
 	_play_tile(String(tiles[i]))
-	get_tree().create_timer(PICK_SECONDS).timeout.connect(func(): _play_next(tiles, i + 1))
+	# Cadence must fit the clip: generated phoneme wavs run 0.7-1.3 s.
+	var gap := PICK_SECONDS
+	var stream := CCAssetFetcher.phoneme_stream(String(tiles[i]))
+	if stream != null:
+		gap = maxf(PICK_SECONDS, stream.get_length() + 0.12)
+	get_tree().create_timer(gap).timeout.connect(func(): _play_next(tiles, i + 1))
 
 
 func _play_tile(tile: String) -> void:

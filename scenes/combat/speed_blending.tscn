@@ -1,0 +1,94 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/speed_blending.gd" id="1_script"]
+
+[node name="SpeedBlending" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+color = Color(0.05, 0.04, 0.12, 0.78)
+
+[node name="Card" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -430.0
+offset_top = -280.0
+offset_right = 430.0
+offset_bottom = 280.0
+color = Color(0.12, 0.1, 0.24, 0.96)
+
+[node name="Root" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = 250.0
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.98, 0.94, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "Speed Blending"
+horizontal_alignment = 1
+
+[node name="Hint" type="Label" parent="Root"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(780, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.86, 0.95, 1)
+theme_override_font_sizes/font_size = 18
+text = "Hint"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="StreamBar" type="ProgressBar" parent="Root"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(780, 18)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="Lane" type="Control" parent="Root"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(780, 110)
+layout_mode = 2
+
+[node name="Message" type="Label" parent="Root"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(780, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.82, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+text = "Catch the sounds in order."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="FleeButton" type="Button" parent="Root"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+text = "Run away (Esc)"

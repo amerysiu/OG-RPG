@@ -18,8 +18,8 @@ enum State { WANDER, CHASE, DEFEATED }
 @export var max_hits: int = 2
 @export var body_color: Color = Color(0.86, 0.4, 0.56, 1)
 @export var wander_radius: float = 130.0
-@export var wander_speed: float = 46.0
-@export var chase_speed: float = 84.0
+@export var wander_speed: float = 20.0
+@export var chase_speed: float = 40.0
 @export var detect_radius: float = 150.0
 @export var flee_seconds: float = 2.2
 

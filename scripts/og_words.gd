@@ -67,6 +67,15 @@ const WORDS: Array = [
 	{"word": "trip", "level": 3, "pattern": "CCVC - tr blend", "sounds": ["/t/", "/r/", "/i/", "/p/"], "tiles": ["t", "r", "i", "p"], "hint": "A journey to a place."},
 	{"word": "clap", "level": 3, "pattern": "CCVC - cl blend", "sounds": ["/k/", "/l/", "/a/", "/p/"], "tiles": ["c", "l", "a", "p"], "hint": "You do this with your hands to cheer."},
 	{"word": "snap", "level": 3, "pattern": "CCVC - sn blend", "sounds": ["/s/", "/n/", "/a/", "/p/"], "tiles": ["s", "n", "a", "p"], "hint": "The quick sound a dry twig makes."},
+	{"word": "glad", "level": 3, "pattern": "CCVC - gl blend", "sounds": ["/g/", "/l/", "/a/", "/d/"], "tiles": ["g", "l", "a", "d"], "hint": "A happy feeling."},
+	{"word": "plum", "level": 3, "pattern": "CCVC - pl blend", "sounds": ["/p/", "/l/", "/u/", "/m/"], "tiles": ["p", "l", "u", "m"], "hint": "A type of fruit."},
+	{"word": "from", "level": 3, "pattern": "CCVC - fr blend", "sounds": ["/f/", "/r/", "/o/", "/m/"], "tiles": ["f", "r", "o", "m"], "hint": "Origin or source."},
+	{"word": "brim", "level": 3, "pattern": "CCVC - br blend", "sounds": ["/b/", "/r/", "/i/", "/m/"], "tiles": ["b", "r", "i", "m"], "hint": "Edge of a container."},
+	{"word": "crown", "level": 3, "pattern": "CCVC - cr blend", "sounds": ["/k/", "/r/", "/o/", "/w/"], "tiles": ["c", "r", "o", "w"], "hint": "Head adornment."},
+	{"word": "drift", "level": 3, "pattern": "CCVC - dr blend", "sounds": ["/d/", "/r/", "/i/", "/f/"], "tiles": ["d", "r", "i", "f"], "hint": "Being carried by wind."},
+	{"word": "sweep", "level": 3, "pattern": "CCVC - sw blend", "sounds": ["/s/", "/w/", "/e/", "/p/"], "tiles": ["s", "w", "e", "p"], "hint": "To clean with a broom."},
+	{"word": "slash", "level": 3, "pattern": "CCVC - sl blend", "sounds": ["/s/", "/l/", "/a/", "/sh/"], "tiles": ["s", "l", "a", "sh"], "hint": "To cut with a sliding motion."},
+	{"word": "twin", "level": 3, "pattern": "CCVC - tw blend", "sounds": ["/t/", "/w/", "/i/", "/n/"], "tiles": ["t", "w", "i", "n"], "hint": "Two of a kind."},
 ]
 
 ## Every grapheme a player may meet at each level, used only to build
@@ -99,6 +108,12 @@ static func words_for_level(level: int) -> Array:
 	var found: Array = []
 	for entry in WORDS:
 		if int(entry["level"]) == level:
+			found.append(entry)
+	for entry in ZONE1_WORDS:
+		if int(entry.get("level", 1)) == level:
+			found.append(entry)
+	for entry in ZONE3_WORDS:
+		if int(entry.get("level", 13)) == level:
 			found.append(entry)
 	return found
 
@@ -198,6 +213,10 @@ const ZONE1_WORDS: Array = [
 	{"word": "tap", "level": 5, "zone": 1, "pattern": "CVC", "sounds": ["/t/", "/a/", "/p/"], "tiles": ["t", "a", "p"], "hint": "Tap with a finger."},
 	{"word": "nap", "level": 5, "zone": 1, "pattern": "CVC continuous", "sounds": ["/n/", "/a/", "/p/"], "tiles": ["n", "a", "p"], "hint": "A short sleep."},
 	{"word": "pan", "level": 5, "zone": 1, "pattern": "CVC continuous", "sounds": ["/p/", "/a/", "/n/"], "tiles": ["p", "a", "n"], "hint": "You cook in a pan."},
+	{"word": "cap", "level": 5, "zone": 1, "pattern": "CVC", "sounds": ["/k/", "/a/", "/p/"], "tiles": ["c", "a", "p"], "hint": "A container for holding things."},
+	{"word": "cat", "level": 5, "zone": 1, "pattern": "CVC", "sounds": ["/k/", "/a/", "/t/"], "tiles": ["c", "a", "t"], "hint": "A soft pet that says meow."},
+	{"word": "bat", "level": 5, "zone": 1, "pattern": "CVC", "sounds": ["/b/", "/a/", "/t/"], "tiles": ["b", "a", "t"], "hint": "It flies at night and sleeps upside down."},
+	{"word": "dog", "level": 5, "zone": 1, "pattern": "CVC", "sounds": ["/d/", "/o/", "/g/"], "tiles": ["d", "o", "g"], "hint": "A pet that barks and wags its tail."},
 ]
 
 const ZONE3_WORDS: Array = [
@@ -213,12 +232,14 @@ const ZONE3_WORDS: Array = [
 	{"word": "helpful", "level": 16, "zone": 3, "pattern": "suffix -ful", "sounds": ["/h/", "/e/", "/l/", "/p/", "/f/", "/u/", "/l/"], "tiles": ["help", "ful"], "hint": "Ready to help.", "syllables": ["help", "ful"]},
 	{"word": "sadness", "level": 16, "zone": 3, "pattern": "suffix -ness", "sounds": ["/s/", "/a/", "/d/", "/n/", "/e/", "/s/"], "tiles": ["sad", "ness"], "hint": "The feeling of being sad.", "syllables": ["sad", "ness"]},
 	{"word": "kindness", "level": 16, "zone": 3, "pattern": "suffix -ness", "sounds": ["/k/", "/ī/", "/n/", "/d/", "/n/", "/e/", "/s/"], "tiles": ["kind", "ness"], "hint": "Being kind to others.", "syllables": ["kind", "ness"]},
-	{"word": "said", "level": 17, "zone": 3, "pattern": "irregular", "sounds": ["/s/", "/e/", "/d/"], "tiles": ["s", "ai", "d"], "hint": "He said hello. Rule breaker: ai says /e/.", "syllables": ["said"]},
-	{"word": "was", "level": 17, "zone": 3, "pattern": "irregular", "sounds": ["/w/", "/u/", "/z/"], "tiles": ["w", "a", "s"], "hint": "It was sunny. Rule breaker: a says /u/.", "syllables": ["was"]},
-	{"word": "come", "level": 18, "zone": 3, "pattern": "irregular", "sounds": ["/k/", "/u/", "/m/"], "tiles": ["c", "o", "me"], "hint": "Come here. Rule breaker: o says /u/.", "syllables": ["come"]},
-	{"word": "have", "level": 18, "zone": 3, "pattern": "irregular", "sounds": ["/h/", "/a/", "/v/"], "tiles": ["h", "a", "ve"], "hint": "I have a book. Rule breaker: a is short.", "syllables": ["have"]},
-	{"word": "friend", "level": 19, "zone": 3, "pattern": "irregular", "sounds": ["/f/", "/r/", "/e/", "/n/", "/d/"], "tiles": ["fr", "ie", "nd"], "hint": "A person who cares for you. Rule breaker: ie says /e/.", "syllables": ["friend"]},
+	{"word": "said", "level": 17, "zone": 3, "pattern": "irregular", "sounds": ["/s/", "/e/", "/d/"], "tiles": ["s", "ai", "d"], "hint": "He said hello. Rule breaker: ai says /e/."},
+	{"word": "was", "level": 17, "zone": 3, "pattern": "irregular", "sounds": ["/w/", "/u/", "/z/"], "tiles": ["w", "a", "s"], "hint": "It was sunny. Rule breaker: a says /u/."},
+	{"word": "come", "level": 18, "zone": 3, "pattern": "irregular", "sounds": ["/k/", "/u/", "/m/"], "tiles": ["c", "o", "me"], "hint": "Come here. Rule breaker: o says /u/."},
+	{"word": "have", "level": 18, "zone": 3, "pattern": "irregular", "sounds": ["/h/", "/a/", "/v/"], "tiles": ["h", "a", "ve"], "hint": "I have a book. Rule breaker: a is short."},
+	{"word": "friend", "level": 19, "zone": 3, "pattern": "irregular", "sounds": ["/f/", "/r/", "/e/", "/n/", "/d/"], "tiles": ["fr", "ie", "nd"], "hint": "A person who cares for you. Rule breaker: ie says /e/."},
 	{"word": "because", "level": 19, "zone": 3, "pattern": "irregular two-syllable", "sounds": ["/b/", "/ē/", "/k/", "/u/", "/z/"], "tiles": ["be", "cause"], "hint": "Why something happens.", "syllables": ["be", "cause"]},
+	{"word": "area", "level": 20, "zone": 3, "pattern": "irregular", "sounds": ["/e/", "/r/", "/i/", "/ə/"], "tiles": ["a", "r", "ea"], "hint": "A region or space.", "syllables": ["a", "r", "ea"]},
+	{"word": "music", "level": 20, "zone": 3, "pattern": "irregular two-syllable", "sounds": ["/m/", "/u/", "/z/", "/i/", "/k/"], "tiles": ["mu", "sic"], "hint": "Sound produced by instruments.", "syllables": ["mu", "sic"]},
 ]
 
 

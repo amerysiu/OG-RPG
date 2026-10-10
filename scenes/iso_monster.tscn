@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/iso_monster.gd" id="1_monster"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_monster"]
+radius = 28.0
+
+[node name="IsoMonster" type="Area2D" groups=["monster"]]
+y_sort_enabled = true
+script = ExtResource("1_monster")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Shadow" type="Polygon2D" parent="Visual"]
+color = Color(0.04, 0.03, 0.08, 0.4)
+polygon = PackedVector2Array(-22, 8, 22, 8, 14, 18, -14, 18)
+
+[node name="Sprite" type="Sprite2D" parent="Visual"]
+texture_filter = 1
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_monster")
+
+[node name="Tag" type="Label" parent="."]
+offset_left = -120.0
+offset_top = -118.0
+offset_right = 120.0
+offset_bottom = -90.0
+theme_override_colors/font_color = Color(0.95, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "Wild Thing"
+horizontal_alignment = 1
+
+[node name="HitsLabel" type="Label" parent="."]
+offset_left = -120.0
+offset_top = -92.0
+offset_right = 120.0
+offset_bottom = -68.0
+theme_override_colors/font_color = Color(1, 0.78, 0.42, 1)
+theme_override_font_sizes/font_size = 14
+text = "Hits: 2"
+horizontal_alignment = 1

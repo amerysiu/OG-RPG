@@ -1,0 +1,105 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/kinesthetic_forging.gd" id="1_script"]
+
+[node name="KinestheticForging" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+color = Color(0.08, 0.05, 0.12, 0.8)
+
+[node name="Card" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -430.0
+offset_top = -300.0
+offset_right = 430.0
+offset_bottom = 300.0
+color = Color(0.16, 0.1, 0.22, 0.96)
+
+[node name="Root" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -270.0
+offset_right = 400.0
+offset_bottom = 270.0
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.55, 1)
+theme_override_font_sizes/font_size = 28
+text = "Kinesthetic Forging"
+horizontal_alignment = 1
+
+[node name="Hint" type="Label" parent="Root"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(780, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.86, 0.95, 1)
+theme_override_font_sizes/font_size = 18
+text = "Hint"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Glyph" type="Label" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 72
+text = "a"
+horizontal_alignment = 1
+
+[node name="TraceHolder" type="Control" parent="Root"]
+custom_minimum_size = Vector2(780, 140)
+layout_mode = 2
+
+[node name="TracePath" type="Line2D" parent="Root/TraceHolder"]
+unique_name_in_owner = true
+position = Vector2(390, 70)
+width = 6.0
+default_color = Color(0.95, 0.78, 0.32, 0.85)
+
+[node name="TraceRow" type="HBoxContainer" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Message" type="Label" parent="Root"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(780, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.82, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+text = "Trace the letter-sound in the air."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="FleeButton" type="Button" parent="Root"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+text = "Run away (Esc)"

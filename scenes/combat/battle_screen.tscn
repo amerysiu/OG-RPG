@@ -124,7 +124,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 18
-text = "Light Hit"
+text = "Sword Light  ·  1"
 
 [node name="HeavyButton" type="Button" parent="Frame/Margin/Split/Left/AttackRow" unique_id=1175731179]
 unique_name_in_owner = true
@@ -133,7 +133,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 18
-text = "Heavy Hit"
+text = "Sword Heavy  ·  2"
 
 [node name="MagicButton" type="Button" parent="Frame/Margin/Split/Left/AttackRow" unique_id=394622908]
 unique_name_in_owner = true
@@ -142,7 +142,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
 theme_override_font_sizes/font_size = 18
-text = "Wand Magic"
+text = "Wand Magic  ·  1"
 
 [node name="FleeButton" type="Button" parent="Frame/Margin/Split/Left" unique_id=1177508997]
 unique_name_in_owner = true

@@ -1,6 +1,7 @@
 extends Node
 
 @onready var word_build_overlay: Control = $"../PuzzleLayer/WordBuild"
+@onready var main_game_manager: Node = get_node("/root/MainGameManager")
 
 func _ready() -> void:
 	print("[SYSTEM] Encounter Referee initialized. Listening for monster contacts...")
@@ -42,9 +43,12 @@ func _on_word_solved(word: String) -> void:
 			# Inflict 1 hit of spelling damage
 			var new_hp = m._hits_left - 1
 			m.set_hits_left(new_hp)
-			
+				
 			if new_hp <= 0:
 				m.mark_defeated()
+				# Award XP to MainGameManager for solving the word
+				if main_game_manager != null:
+					main_game_manager.award_xp_for_word()
 				if word_build_overlay:
 					word_build_overlay.close_overlay()
 			else:
