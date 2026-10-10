@@ -1,18 +1,13 @@
-[gd_resource type="Theme" load_steps=3 format=3]
+[gd_resource type="Theme" load_steps=2 format=3]
 
-[ext_resource type="FontFile" uid="uid://ds0e8bded48br" path="res://fonts/OpenDyslexic-Regular.otf" id="1_dyslexic"]
-
-[sub_resource type="FontVariation" id="FontVariation_body"]
-base_font = ExtResource("1_dyslexic")
-spacing_glyph = 3
-spacing_space = 3
-spacing_bottom = 4
+[sub_resource type="SystemFont" id="SystemFont_body"]
+font_names = PackedStringArray("Open Sans", "Segoe UI", "Arial")
 
 [resource]
-default_font = SubResource("FontVariation_body")
-Label/fonts/font = SubResource("FontVariation_body")
-RichTextLabel/fonts/normal_font = SubResource("FontVariation_body")
-RichTextLabel/fonts/bold_font = SubResource("FontVariation_body")
-RichTextLabel/fonts/italics_font = SubResource("FontVariation_body")
-RichTextLabel/fonts/bold_italics_font = SubResource("FontVariation_body")
-RichTextLabel/fonts/mono_font = SubResource("FontVariation_body")
+default_font = SubResource("SystemFont_body")
+Label/fonts/font = SubResource("SystemFont_body")
+RichTextLabel/fonts/normal_font = SubResource("SystemFont_body")
+RichTextLabel/fonts/bold_font = SubResource("SystemFont_body")
+RichTextLabel/fonts/italics_font = SubResource("SystemFont_body")
+RichTextLabel/fonts/bold_italics_font = SubResource("SystemFont_body")
+RichTextLabel/fonts/mono_font = SubResource("SystemFont_body")

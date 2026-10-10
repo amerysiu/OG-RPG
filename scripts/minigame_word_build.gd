@@ -1,7 +1,7 @@
 extends Control
 signal word_solved(word: String)
 signal flee_requested
-signal question_answered(correct: bool, word: String = "")
+signal question_answered(correct: bool, word: String)
 
 enum QuestionMode { SPELL, MATCH, MULTIPLE_CHOICE }
 

@@ -123,7 +123,7 @@ func start_new_battle_encounter() -> void:
 			pattern_name = OGWords.level_focus(2)
 		3:
 			pattern_name = OGWords.level_focus(3)
-		else:
+		_:
 			pattern_name = "review words"
 	
 	# Split word into graphemes for expected sequence
