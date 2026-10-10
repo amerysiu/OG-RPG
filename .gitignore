@@ -2,5 +2,9 @@
 .godot/
 /android/
 
+# Python tooling
+__pycache__/
+*.pyc
+
 # Summer Engine local-only state
 .summer/local/
