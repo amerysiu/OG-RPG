@@ -156,6 +156,41 @@ func word_stream(word: String) -> AudioStream:
 	return null
 
 
+## The recording for a sound written "/k/", "/ā/", "/sh/" ... ("-" = silent).
+func sound_stream(sound: String) -> AudioStream:
+	var key := sound.strip_edges().trim_prefix("/").trim_suffix("/").to_lower()
+	if key.is_empty() or key == "-":
+		return null
+	return _phoneme_wav(key)
+
+
+## A tile as it sounds IN THIS WORD: prefer the sound (so the ai in "rain"
+## says /ā/ and the ai in "said" says /e/), else the grapheme's own clip.
+func unit_stream(sound: String, tile: String) -> AudioStream:
+	var by_sound := sound_stream(sound)
+	if by_sound != null:
+		return by_sound
+	if sound.strip_edges() == "-":
+		return null
+	return phoneme_stream(tile)
+
+
+## A short chunk such as a syllable ("rab"), a rime ("-at") or a morpheme.
+func chunk_stream(chunk: String) -> AudioStream:
+	var key := chunk.to_lower().strip_edges()
+	var direct := _phoneme_wav(key)
+	if direct != null:
+		return direct
+	var as_word := word_stream(key.trim_prefix("-"))
+	if as_word != null:
+		return as_word
+	return phoneme_stream(key.trim_prefix("-"))
+
+
+func has_word_audio(word: String) -> bool:
+	return ResourceLoader.exists("res://audio/words/%s.wav" % word.to_lower().strip_edges())
+
+
 ## The recording for one phoneme key, resolving PHONEME_ALIASES one level.
 func _phoneme_wav(key: String) -> AudioStreamWAV:
 	var path := "res://audio/phonemes/%s.wav" % key

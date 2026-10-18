@@ -27,6 +27,7 @@ window/stretch/aspect="expand"
 RoomStateManager="*res://scripts/net/room_state_manager.gd"
 ZoneCatalog="*res://scripts/world/zone_catalog.gd"
 CCAssetFetcher="*res://scripts/assets/cc_asset_fetcher.gd"
+Learner="*res://scripts/og/learner.gd"
 MainGameManager="*res://scripts/MainGameManager.gd"
 
 [dotnet]

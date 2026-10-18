@@ -16,7 +16,14 @@ todos:
     content: >-
       Milestone 2: add the rest of the OG mini-games (Elkonin boxes, word chain,
       syllable sort, which-spelling) and give each monster type one.
-    status: in_progress
+    status: completed
+  - id: m2b-og-curriculum
+    content: >-
+      Milestone 2b: 42-stage OG learning map (sounds -> letters -> closed
+      syllables -> vowel patterns -> multisyllable -> morphemes), mastery
+      gating (80% x 2 days), adaptive Easy/Normal/Hard, 8 zones with bosses,
+      Learning Map + teacher panel. See docs/OG_Learning_Map_and_Level_Redesign.xlsx.
+    status: completed
   - id: m3-resources-inventory
     content: >-
       Milestone 3: gatherable resource nodes in the wild, pickups, and an
@@ -35,8 +42,10 @@ todos:
   - id: m6-campaign
     content: >-
       Milestone 6: OG scope-and-sequence progression, biomes by syllable type,
-      XP and levels, and boss encounters.
-    status: pending
+      XP and levels, and boss encounters. (Core done in 2b; still to do: Letter
+      Trace kinesthetic mode, real art per zone, village buildings tied to
+      zone unlocks, sentence-level audio.)
+    status: in_progress
 ---
 # Pivot: OG ARPG (word-combat)
 
@@ -70,9 +79,11 @@ Syllable types, taught in this order: Closed, Open, Magic e, Vowel Team, R-contr
 
 Each monster type gets a mini-game, so variety comes from the bestiary rather than from reskinning one puzzle.
 
-## Architecture notes
-- One world scene: res://scenes/village.tscn (Node2D). The village sits inside it; the wild is the land around and beyond the village, reached through a gate. Single scene means no scene-switch state loss.
-- Word data lives in res://scripts/og_words.gd (word, sounds, grapheme tiles, hint, pattern, level). res://scripts/word_bank.gd is the legacy 4-letter list and stays untouched.
+## Architecture notes (updated Oct 2026)
+- One world scene: res://scenes/iso_world.tscn, 8 zones in OG order (see .summer/AGENTS.md).
+- Curriculum source of truth: tools/curriculum/curriculum.py -> scripts/og/og_data.gd (generated) + tools/audio/audio_manifest.json.
+- Questions: scripts/og/question_factory.gd; progress: scripts/og/learner.gd (autoload Learner).
+- res://scripts/og_words.gd is now a legacy compatibility layer over the curriculum.
 - The player, camera and HUD already exist and are reused.
 - Encounter overlays freeze the world and must always be escapable.
 

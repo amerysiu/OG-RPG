@@ -1,9 +1,14 @@
 # Project rules - OG English Learning
 
-- Genre: top-down 2D ARPG for Orton-Gillingham reading and spelling practice. Explore the wild, defeat monsters, gather gold and resources, then build and upgrade the village.
-- Combat is assessment: a monster is defeated by completing word mini-games, never by twitch/dodge combat.
-- Word content follows the OG scope and sequence and is gated by it: CVC closed syllables -> consonant digraphs -> blends -> VCe (magic e) -> vowel teams -> r-controlled -> consonant-le.
-- Mini-games must be OG-grounded and multisensory in style (letter tiles, Elkonin sound boxes, word chains, syllable sorting, spelling-rule choice). Generic letter-guessing (hangman/Wordle clones) is not an acceptable primary mechanic.
-- Placeholder colored-shape art is scaffolding only. Real 2D art is its own milestone and is never treated as finished.
-- The village is the safe hub. The wild is where monsters and resources are.
-- Combat attack methods: the player picks the attack before each question. Light Hit (sword, quick word, 1 hit), Heavy Hit (sword, harder word, 2 hits), Wand Magic (listen-and-shield question, 1 hit). Three wrong tries make the attack a miss (no damage); the player then picks an attack again.
+- Genre: 2.5D isometric ARPG for Orton-Gillingham reading and spelling practice, built for dyslexic learners. Explore 8 zones in OG order, defeat monsters by answering OG questions, gather gold and wood, and (later) build the village.
+- Combat is assessment: a monster is defeated by answering OG questions, never by twitch/dodge combat. A miss never hurts the child; it only costs a turn. No timer may ever fail a child.
+- Content follows the OG scope and sequence and is gated by it. The source of truth is tools/curriculum/curriculum.py (42 stages: A sounds (oral) -> B letters -> C closed syllables -> D vowel patterns -> E multisyllable -> F morphemes, plus H heart words and R decodable sentences). Edit the Python file and re-run it; never hand-edit scripts/og/og_data.gd.
+- Only taught content may appear: a question's target AND its distractors come from stages the child has reached. Contrast words (closed words in the open-syllable stage, FLOSS rule-breakers ...) may be sorted or used as distractors, never as the target.
+- Mastery: a stage is mastered at >= 80% on the last 10 items on 2 separate days (teacher can set 1-3). The next stage unlocks on mastery; a zone opens when the previous zone's boss falls; the boss wakes when every stage of its zone is mastered.
+- Difficulty (Easy / Normal / Hard) changes scaffolding only, never content: rule cards, audio, distractors, tries, hints. Adaptive per stage: >= 90% steps up, < 70% steps down. Easy never misses; it models the answer after two slips (OG error correction).
+- Attacks: Wand Magic = listening question on the current stage (1). Sword Light = review question on a mastered stage (1). Sword Heavy = encoding / spelling of the current stage, one tier harder (2). Three attacks stay; the monster family stars one as its signature.
+- Mini-games must be OG-grounded and multisensory (letter tiles, Elkonin boxes, word chains, syllable sorting / splitting, spelling-rule choice, dictation). Generic letter guessing (hangman / Wordle clones) is not acceptable.
+- Oral stages (band A) show no print: options are speaker buttons. Printed text appears only as a fallback when a clip is missing.
+- Audio: every word and phoneme key in tools/audio/audio_manifest.json must have a clip. Regenerate with tools/audio/regen_edge_tts.py after curriculum changes.
+- Placeholder colored-shape art is scaffolding only. Real 2D art is its own milestone.
+- Run res://tests/test_runner.tscn headless after any change to curriculum, question factory, battle screen or learner.

@@ -5,9 +5,18 @@ signal player_contacted(monster: Node)
 enum State { WANDER, CHASE, DEFEATED }
 enum CombatMode { SPEED, AUDIO, FORGE }
 
+## Each monster guards one OG stage. kind: stage | boss | heart | quest.
+## A monster sleeps until its stage is unlocked (bosses: until the whole zone
+## is mastered). Defeated stage monsters come back after RESPAWN_SECONDS so
+## the child can keep practising; a defeated boss stays down for good.
+const RESPAWN_SECONDS := 18.0
+
 @export var display_name: String = "Wild Thing"
 @export var word_level: int = 1
 @export var zone_id: int = 1
+@export var stage_id: String = "C1"
+@export var kind: String = "stage"
+@export var boss_stages: Array = []
 @export var max_hits: int = 2
 @export var combat_mode: CombatMode = CombatMode.SPEED
 @export var wander_radius: float = 90.0
@@ -23,6 +32,8 @@ var _state: int = State.WANDER
 var _hits_left: int = 0
 var _flee_timer: float = 0.0
 var _player_node: Node2D = null
+var _asleep := false
+var _respawn_timer: Timer
 
 @onready var _visual: Node2D = $Visual
 @onready var _sprite: Sprite2D = $Visual/Sprite
@@ -38,10 +49,72 @@ func _ready() -> void:
 	_target = global_position
 	_hits_left = maxi(1, max_hits)
 	_apply_sprite()
-	if _tag != null:
-		_tag.text = "%s  Lv%d" % [display_name, word_level]
-	_refresh_hits_label()
+	if kind == "boss":
+		_visual.scale = Vector2(1.45, 1.45)
+	_respawn_timer = Timer.new()
+	_respawn_timer.one_shot = true
+	_respawn_timer.timeout.connect(_respawn)
+	add_child(_respawn_timer)
 	body_entered.connect(_on_body_entered)
+	if Learner.has_signal("changed"):
+		Learner.changed.connect(refresh_state)
+	refresh_state()
+
+
+## Wake or sleep according to the child's progress, and relabel.
+func refresh_state() -> void:
+	if _state == State.DEFEATED and kind != "boss":
+		return
+	if kind == "boss" and Learner.is_boss_defeated(zone_id):
+		_state = State.DEFEATED
+		visible = false
+		set_physics_process(false)
+		set_deferred("monitoring", false)
+		return
+	_asleep = not is_awake()
+	if _visual != null:
+		_visual.modulate = Color(0.55, 0.55, 0.7, 0.75) if _asleep else Color.WHITE
+	if _tag != null:
+		var what := OGCurriculum.label(stage_id) if kind == "stage" else ""
+		match kind:
+			"boss":
+				what = "BOSS · review of zone %d" % zone_id
+			"heart":
+				what = "Heart words"
+			"quest":
+				what = "Daily review"
+		_tag.text = "%s\n%s" % [display_name, what]
+		_tag.offset_top = -130.0
+		_tag.add_theme_font_size_override("font_size", 13)
+	_refresh_hits_label()
+
+
+func is_awake() -> bool:
+	match kind:
+		"boss":
+			return Learner.is_boss_ready(zone_id) and not Learner.is_boss_defeated(zone_id)
+		"heart":
+			return Learner.is_zone_unlocked(zone_id)
+		"quest":
+			return not Learner.mastered_stages().is_empty()
+	return Learner.is_stage_unlocked(stage_id)
+
+
+## Why this monster is asleep, for the status line.
+func sleep_reason() -> String:
+	match kind:
+		"boss":
+			if not Learner.is_zone_unlocked(zone_id):
+				return "%s is sealed away. Beat the previous boss first." % display_name
+			return "%s sleeps until every stage in this zone is mastered." % display_name
+		"quest":
+			return "The Quest Board opens once you master your first stage."
+		"heart":
+			return "This zone is still sealed."
+	var prev := OGCurriculum.previous_stage(stage_id)
+	if not Learner.is_zone_unlocked(zone_id):
+		return "This zone is sealed. Beat the previous zone's boss to open it."
+	return "%s is asleep. Master %s first." % [display_name, OGCurriculum.label(prev)]
 
 
 func combat_mode_key() -> String:
@@ -67,6 +140,21 @@ func set_encounter_paused(paused: bool) -> void:
 	set_physics_process(not paused)
 
 
+func is_asleep() -> bool:
+	return _asleep
+
+
+## What the battle screen needs to know about this monster.
+func battle_info() -> Dictionary:
+	var pool: Array = []
+	for sid in boss_stages:
+		pool.append(String(sid))
+	return {
+		"name": display_name, "zone": zone_id, "stage": stage_id, "kind": kind,
+		"stages": pool, "combat_mode": combat_mode_key(),
+	}
+
+
 func is_defeated() -> bool:
 	return _state == State.DEFEATED
 
@@ -88,10 +176,27 @@ func mark_defeated() -> void:
 	set_deferred("monitoring", false)
 	set_deferred("monitorable", false)
 	visible = false
+	if kind != "boss":
+		_respawn_timer.start(RESPAWN_SECONDS)
+
+
+func _respawn() -> void:
+	_state = State.WANDER
+	global_position = _home
+	_target = _home
+	_hits_left = maxi(1, max_hits)
+	visible = true
+	set_physics_process(true)
+	set_deferred("monitoring", true)
+	set_deferred("monitorable", true)
+	_flee_timer = flee_seconds
+	refresh_state()
 
 
 func _physics_process(delta: float) -> void:
 	if _state == State.DEFEATED:
+		return
+	if _asleep:
 		return
 	if _flee_timer > 0.0:
 		_flee_timer = maxf(0.0, _flee_timer - delta)
@@ -155,6 +260,10 @@ func _find_player() -> Node2D:
 func _on_body_entered(body: Node2D) -> void:
 	if _state == State.DEFEATED or _flee_timer > 0.0:
 		return
+	if _asleep:
+		if body.is_in_group("player"):
+			player_contacted.emit(self)
+		return
 	if not body.is_in_group("player"):
 		return
 	player_contacted.emit(self)
@@ -162,7 +271,7 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _refresh_hits_label() -> void:
 	if _hits_label != null:
-		_hits_label.text = "%s  Hits:%d" % [combat_mode_key().capitalize(), _hits_left]
+		_hits_label.text = "zzz  asleep" if _asleep else ("%s ★  ·  %s" % [{"audio": "Wand", "speed": "Light", "forge": "Heavy"}[combat_mode_key()], "ready"])
 
 
 func _apply_sprite() -> void:

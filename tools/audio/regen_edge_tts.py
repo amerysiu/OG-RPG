@@ -3,9 +3,13 @@
 Edge-tts is free, sounds far cleaner than the old VoiceStudio clips, and
 needs no local model. Run from repo root:
 
-  python tools/audio/regen_edge_tts.py --pilot
-  python tools/audio/regen_edge_tts.py --all
-  python tools/audio/regen_edge_tts.py --all --force
+  python tools/audio/regen_edge_tts.py              (only missing clips)
+  python tools/audio/regen_edge_tts.py --force      (redo everything)
+  python tools/audio/regen_edge_tts.py --kind pilot
+
+The list of clips comes from tools/audio/audio_manifest.json, written by
+tools/curriculum/curriculum.py: every phoneme / syllable / rime key the
+game can play and every word in the curriculum.
 
 Output matches the layout the game loads:
   audio/phonemes/<grapheme>.wav
@@ -74,7 +78,7 @@ PHONEMES: dict[str, str] = {
     "th": "thhh",
     "ck": "kuh",
     # vowel teams seen in the bank
-    "ai": "eh",
+    "ai": "ay",
     "ea": "eee",
     "oa": "oh",
     "ie": "eye",
@@ -116,8 +120,22 @@ PILOT_PHONEMES = ["a", "e", "i", "o", "u", "s", "m", "t", "sh", "th"]
 PILOT_WORDS = ["cat", "sun", "fish", "chip", "stop", "frog", "map", "ship", "because"]
 
 
+MANIFEST = HERE / "audio_manifest.json"
+
+
+def manifest() -> dict:
+    import json
+
+    if MANIFEST.exists():
+        return json.loads(MANIFEST.read_text(encoding="utf-8"))
+    return {"phonemes": {}, "words": []}
+
+
 def words_from_bank() -> list[str]:
-    """Every distinct word the game can play, pulled from og_words.gd."""
+    """Every word the game can say (curriculum manifest; legacy fallback)."""
+    words = manifest().get("words", [])
+    if words:
+        return list(dict.fromkeys(w.lower() for w in words))
     text = (ROOT / "scripts" / "og_words.gd").read_text(encoding="utf-8")
     found: list[str] = []
     for line in text.splitlines():
@@ -131,7 +149,10 @@ def words_from_bank() -> list[str]:
 
 
 def tiles_from_bank() -> list[str]:
-    """Every tile the game can tap, pulled from og_words.gd "tiles" arrays."""
+    """Every phoneme / chunk key the game can play (manifest; legacy fallback)."""
+    keys = list(manifest().get("phonemes", {}).keys())
+    if keys:
+        return keys
     import re
 
     text = (ROOT / "scripts" / "og_words.gd").read_text(encoding="utf-8")
@@ -144,7 +165,9 @@ def tiles_from_bank() -> list[str]:
 
 
 def phoneme_prompt(key: str) -> str:
-    return PHONEMES.get(key, key)
+    if key in PHONEMES:
+        return PHONEMES[key]
+    return manifest().get("phonemes", {}).get(key, key.lstrip("-"))
 
 
 def word_prompt(word: str) -> str:
